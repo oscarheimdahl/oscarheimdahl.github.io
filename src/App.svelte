@@ -8,6 +8,7 @@
 <main>
   <div class="container">
     <StartPage />
+    <!-- <section /> -->
   </div>
   <Footer />
 </main>
@@ -26,6 +27,19 @@
       flex-grow: 2;
       display: grid;
       place-items: center;
+    }
+  }
+
+  section {
+    height: 100%;
+    width: 100%;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.2) 10%, transparent 10%);
+    background-size: 2vmin 2vmin;
+    background-position: 0% 0%;
+    transition: background-position 500ms;
+
+    &:hover {
+      background-position: 30px 30px;
     }
   }
 </style>

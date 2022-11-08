@@ -1,49 +1,63 @@
 <script>
+  import { count } from '../stores/view';
   export let x;
   export let y;
   export let dy;
 
-  const c = Math.floor((255 * x) / 400);
+  let fall = Math.random() > 0.5 ? '' : 'fall';
+  let hide = '';
+
+  count.subscribe((value) => {
+    if (value) hide = 'hide';
+    else hide = '';
+  });
 </script>
 
-<line class="hoverer" style="--dy: {dy}" x1={x} x2={x} y1="100" y2={y} vector-effect="non-scaling-stroke" />
-<line
-  class="shown"
-  style="--dy: {dy}; --color: {c};"
-  x1={x}
-  x2={x}
-  y1="100"
-  y2={y}
-  vector-effect="non-scaling-stroke"
-/>
+<g class={`${hide} ${fall}`}>
+  <line
+    class={`${hide} ${fall}`}
+    style="--dy: {dy};"
+    x1={x}
+    x2={x}
+    y1="100"
+    y2={y}
+    vector-effect="non-scaling-stroke"
+    shape-rendering="crispEdges"
+  />
+</g>
 
 <style lang="scss">
   @import '../styles/variables.scss';
 
-  .hoverer {
-    stroke-width: 150px;
-    opacity: 0;
+  g {
+    transition: transform 3s;
 
-    &:hover + line {
-      transition: none;
-      opacity: 0;
+    &.hide {
+      animation: none;
+      transform: translateY(200%);
+
+      &.fall {
+        transform: translateY(-200%);
+      }
+
+      line {
+        animation-play-state: paused;
+      }
     }
-  }
 
-  .shown {
-    opacity: 1;
-  }
+    line {
+      stroke: $accent2;
+      stroke-width: 1px;
 
-  line {
-    stroke: $accent2;
-    stroke-width: 1px;
-    transition: opacity 5000ms;
-    transform: translateY(100%);
+      animation: rise infinite linear;
+      animation-duration: var(--dy);
+      animation-fill-mode: forwards;
+      animation-delay: -50s;
 
-    animation: rise 4s infinite linear;
-    animation-duration: var(--dy);
-    animation-fill-mode: forwards;
-    animation-delay: -50s;
+      &.fall {
+        animation-name: fall;
+      }
+    }
   }
 
   @keyframes rise {
@@ -52,7 +66,15 @@
     }
     100% {
       transform: translateY(-100%);
-      // opacity: 0.2;
+    }
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(100%);
     }
   }
 </style>

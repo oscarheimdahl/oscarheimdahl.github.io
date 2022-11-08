@@ -3,10 +3,9 @@
   import Line from './Line.svelte';
 
   const buildLines = (windowW: number) => {
-    console.log('building lines...');
     const newLines = [];
     let baseX = 0;
-    const gap = 40;
+    const gap = 30;
 
     while (baseX + gap < windowW) {
       const offset = (Math.random() * gap) / 2 - gap / 4;

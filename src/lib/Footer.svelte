@@ -1,15 +1,25 @@
 <script lang="ts">
+  import { count } from '../stores/view';
   import ArrowLeft from 'svelte-material-icons/ArrowLeft.svelte';
   import ArrowRight from 'svelte-material-icons/ArrowRight.svelte';
+
+  const onClick = (val: boolean) => {
+    count.set(val);
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') onClick(true);
+    if (e.key === 'ArrowLeft') onClick(false);
+  });
 </script>
 
 <div class="top-border" />
 <footer>
   <div class="arrows">
-    <button class="arrow">
+    <button on:click={() => onClick(false)} class="arrow">
       <ArrowLeft color={'white'} width={32} height={32} />
     </button>
-    <button class="arrow">
+    <button on:click={() => onClick(true)} class="arrow">
       <ArrowRight color={'white'} width={32} height={32} />
     </button>
   </div>
@@ -18,20 +28,11 @@
 <style lang="scss">
   @import '../styles/variables.scss';
 
-  // .top-border {
-  //   height: 1px;
-  //   background-color: $accent2;
-  //   // background-color: #333;
-  // }
-
   footer {
     width: 100%;
-    // background-color: $main;
     border-top: $accent2 1px solid;
     border-bottom: $accent2 1px solid;
     background-color: transparent;
-    // box-shadow: transparentize($accent, 0.9) 0 -5px 10px;
-    // padding: 1rem;
     padding-right: 5rem;
     display: flex;
     justify-content: space-between;
@@ -51,8 +52,9 @@
         border-bottom: none;
         padding: 3rem;
 
-        &:focus {
+        &:hover {
           background-color: rgba(255, 255, 255, 0.2);
+          cursor: pointer;
         }
       }
     }
