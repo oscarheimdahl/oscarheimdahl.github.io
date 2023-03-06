@@ -1,21 +1,22 @@
 <script>
-  import { count } from '../stores/view';
+  import { count, Views } from '../stores/view';
   export let x;
   export let y;
   export let dy;
 
   let fall = Math.random() > 0.5 ? '' : 'fall';
   let hide = '';
+  let lighter = Math.random() > 0.8 ? 'lighter' : '';
 
-  count.subscribe((value) => {
-    if (value) hide = 'hide';
+  count.subscribe((view) => {
+    if (view !== Views.Start) hide = 'hide';
     else hide = '';
   });
 </script>
 
 <g class={`${hide} ${fall}`}>
   <line
-    class={`${hide} ${fall}`}
+    class="{hide} {fall} {lighter}"
     style="--dy: {dy};"
     x1={x}
     x2={x}
@@ -56,6 +57,10 @@
 
       &.fall {
         animation-name: fall;
+      }
+
+      &.lighter {
+        stroke: $accent3;
       }
     }
   }

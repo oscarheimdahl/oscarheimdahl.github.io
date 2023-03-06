@@ -1,16 +1,24 @@
 <script lang="ts">
+  import { count, Views } from './stores/view';
+
   import Footer from './lib/Footer.svelte';
   import StartPage from './lib/StartPage.svelte';
-
-  const a = '1';
+  import LinesBackground from './lib/LinesBackground.svelte';
+  import FacePage from './lib/FacePage.svelte';
+  import Cursor from './lib/Cursor.svelte';
+  let pageIndex = 0;
 </script>
 
+<Cursor />
 <main>
-  <div class="container">
-    <StartPage />
-    <!-- <section /> -->
+  <LinesBackground />
+  <div class="relative">
+    <div class="page-stack">
+      <StartPage />
+      <FacePage />
+    </div>
+    <Footer />
   </div>
-  <Footer />
 </main>
 
 <style lang="scss">
@@ -18,28 +26,26 @@
 
   main {
     height: 100%;
-    display: flex;
-    flex-direction: column;
 
-    .container {
-      background-color: $main2;
+    .relative {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .page-stack {
       height: 100%;
       flex-grow: 2;
       display: grid;
       place-items: center;
     }
   }
+  // :global(.page-stack:not(:first-child)) {
+  //   cursor: auto;
+  // }
 
-  section {
-    height: 100%;
-    width: 100%;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.2) 10%, transparent 10%);
-    background-size: 2vmin 2vmin;
-    background-position: 0% 0%;
-    transition: background-position 500ms;
-
-    &:hover {
-      background-position: 30px 30px;
-    }
+  :global(main .page-stack > *) {
+    grid-area: 1 / 1 / 2 / 2;
   }
 </style>
