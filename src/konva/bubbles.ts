@@ -115,7 +115,6 @@ function buildCircle({
     stroke: 'white',
     listening: false,
     cornerRadius: 10,
-    strokeWidth: 1,
   });
   layer.add(circle);
 

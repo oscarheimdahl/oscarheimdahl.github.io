@@ -65,15 +65,6 @@
   style:overflow={hideContent ? 'hidden' : 'scroll'}
   class="h-full flex justify-center"
 >
-  <dialog id="dia">
-    BAJS <button on:click={() => document.querySelector('#dia').close()}
-      >clsoe</button
-    >
-  </dialog>
-  <button
-    on:click={() => document.querySelector('#dia').showModal()}
-    class="p-4 bg-red-700">KLICKA</button
-  >
   <div
     class:hide={hideContent}
     class={`content
