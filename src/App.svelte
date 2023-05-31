@@ -6,8 +6,12 @@
 </script>
 
 <div class="grid page-stack h-full">
-  <Background2 />
-  <!-- <Background /> -->
+  <div class="hidden sm:block">
+    <Background2 />
+  </div>
+  <div class="sm:hidden">
+    <Background />
+  </div>
   <About />
 </div>
 

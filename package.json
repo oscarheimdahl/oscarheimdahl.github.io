@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "deploy": "git subtree push --prefix dist origin gh-pages",
+    "build-deploy": "pnpm build && pnpm deploy",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },

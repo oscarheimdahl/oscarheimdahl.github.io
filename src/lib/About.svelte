@@ -70,14 +70,14 @@
     class={`content
             scroll-smooth bg-slate-100 shadow-lg rounded-t-xl
             relative flex justify-center
-            mt-[36rem] mx-4 pt-36 pb-8 px-4 h-fit min-h-[calc(100dvh-24rem)]
-            sm:px-[2vw]
+            mt-[26rem] mx-4 pt-36 pb-8 px-4 h-fit min-h-[calc(100dvh-24rem)]
+            sm:px-[2vw] sm:mt-[36rem]
             `}
   >
     <div class="img-container absolute -top-36 p-2 rounded-[2rem]">
       <img src={oscar} alt="oscar" class="profile-img w-64 h-64 rounded-3xl" />
     </div>
-    <div class="absolute top-0 right-0 m-3 flex justify-end gap-2">
+    <div class="absolute top-0 right-0 m-3 justify-end gap-2 hidden sm:flex">
       <button
         on:click={toggleConfettiMode}
         class="group p-1 rounded-md scale-125 hover:bg-slate-300"
