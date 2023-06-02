@@ -3,10 +3,10 @@ import Konva from 'Konva';
 import type { Circle } from 'Konva/lib/shapes/Circle';
 import type { Rect } from 'Konva/lib/shapes/Rect';
 import Victor from 'victor';
-import { layer } from './background';
+import { layer, map } from './background';
 
-type Confetti = {
-  rect: Rect;
+type Orb = {
+  circle: Circle;
   location: Victor;
   velocity: Victor;
   acceleration: Victor;
@@ -14,9 +14,9 @@ type Confetti = {
   remove: boolean;
 };
 
-let confettis: Confetti[] = []; // buildCircles();
+let orbs: Orb[] = []; // buildCircles();
 
-export function explode({
+export function toggleOrbs({
   x = Math.random() * window.innerWidth,
   y = Math.random() * window.innerHeight,
   n = 400,
@@ -25,56 +25,58 @@ export function explode({
   y?: number;
   n?: number;
 }) {
-  if (confettis.length > 2000) return;
+  if (orbs.length > 3000) return;
   const speed = 10;
   const S = 60;
 
   for (let i = 0; i < n; i++) {
-    const H = Math.floor(Math.random() * 255);
+    const H = Math.floor(Math.random() * 20);
     const L = Math.floor(Math.random() * 70 + 30);
     const angle = Math.random() * 360;
-    const circle = buildCircle({
+    const velocity = new Victor(
+      Math.random() * speed + speed / 2,
+      0
+    ).rotateByDeg(angle);
+    const orb = buildOrb({
       x,
       y,
-      w: 4,
-      velocity: new Victor(Math.random() * speed - speed / 2, 0)
-        .rotateByDeg(angle)
-        .add(new Victor(0, -3)),
+      w: map(velocity.length(), speed / 2, speed + speed / 2, 4, 20),
+      velocity: velocity,
       fill: `hsl(${H} ${S}% ${L}%)`,
     });
-    confettis.push(circle);
+    orbs.push(orb);
   }
   return true;
 }
 
-export function moveConfetti() {
+export function moveOrbs() {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const nextCircles = [];
-  confettis.forEach((confetti, i) => {
-    confetti.acceleration = new Victor(0, 0.1); //targetVec;
+  const nextOrbs = [];
+  orbs.forEach((orb, i) => {
+    // orb.acceleration = new Victor(0, 0.1); //targetVec;
 
-    confetti.velocity.add(confetti.acceleration);
-    confetti.location.add(confetti.velocity);
+    orb.velocity.add(orb.acceleration);
+    orb.location.add(orb.velocity);
+    orb.velocity.rotateDeg(0.5);
+    orb.circle.x(orb.location.x);
+    orb.circle.y(orb.location.y);
 
-    confetti.rect.x(confetti.location.x);
-    confetti.rect.y(confetti.location.y);
-    confetti.rect.rotate(1);
+    const inViewport =
+      orb.circle.y() > 0 &&
+      orb.circle.y() < height &&
+      orb.circle.x() > 0 &&
+      orb.circle.x() < width;
 
-    const outsideScreen =
-      confetti.rect.y() < height &&
-      confetti.rect.x() > 0 &&
-      confetti.rect.x() < width;
-
-    if (outsideScreen) nextCircles.push(confetti);
-    else confetti.rect.remove();
+    if (inViewport) nextOrbs.push(orb);
+    else orb.circle.remove();
   });
 
-  confettis = nextCircles;
+  orbs = nextOrbs;
 }
 
 export function resetConfetti() {
-  confettis = [];
+  orbs = [];
 }
 
 interface BuildCircleArgs {
@@ -85,7 +87,7 @@ interface BuildCircleArgs {
   location?: Victor;
   fill?: string;
 }
-function buildCircle({
+function buildOrb({
   x,
   y,
   w,
@@ -93,24 +95,23 @@ function buildCircle({
   location = new Victor(x, y),
   fill = 'white',
 }: BuildCircleArgs) {
-  const rect = new Konva.Rect({
+  const orb = new Konva.Circle({
     x,
     y,
     width: w / 2,
-    height: w * 2,
     fill,
     rotation: Math.floor(Math.random() * 360),
     listening: false,
     cornerRadius: 10,
   });
-  layer.add(rect);
+  layer.add(orb);
 
   return {
-    rect: rect,
+    circle: orb,
     velocity,
     acceleration: new Victor(0, 0),
     location,
-    home: new Victor(rect.x(), rect.y()),
+    home: new Victor(orb.x(), orb.y()),
     remove: false,
   };
 }

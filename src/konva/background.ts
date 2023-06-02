@@ -3,6 +3,7 @@ import type { Layer } from 'Konva/lib/Layer';
 import type { Stage } from 'Konva/lib/Stage';
 import { moveConfetti, resetConfetti } from './confetti';
 import { moveBubbles, resetBubbles } from './bubbles';
+import { moveOrbs } from './orbs';
 
 let stage: Stage;
 export let layer = new Konva.Layer();
@@ -42,10 +43,11 @@ function move() {
   if (pause) return;
   moveConfetti();
   moveBubbles();
+  moveOrbs();
   requestAnimationFrame(move);
 }
 
-function map(
+export function map(
   value: number,
   low1: number,
   high1: number,

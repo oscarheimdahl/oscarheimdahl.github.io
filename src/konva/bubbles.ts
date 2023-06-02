@@ -21,7 +21,7 @@ type Bubble = {
   remove: boolean;
 };
 
-let bubbles: Bubble[] = []; // buildCircles();
+let bubbles: Bubble[] = [];
 
 export function startBubbles({
   x = Math.random() * window.innerWidth,

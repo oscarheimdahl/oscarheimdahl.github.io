@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { buildBackground, init } from '../konva/background';
+  import { buildBackground, init } from '../../konva/background';
   onMount(() => {
     init();
     buildBackground();
@@ -12,9 +12,9 @@
       to = setTimeout(() => {
         buildBackground();
         to = undefined;
-      }, 100);
+      }, 1000);
     });
   });
 </script>
 
-<div class="pointer-events-none w-full h-full overflow-hidden" id="container" />
+<div class="w-full h-full overflow-hidden" id="container" />

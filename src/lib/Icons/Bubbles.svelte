@@ -1,5 +1,5 @@
 <script>
-  export let colored = true;
+  export let colored = false;
   // https://react-icons.github.io/react-icons/icons?name=tb
 </script>
 

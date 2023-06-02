@@ -1,18 +1,20 @@
 <script lang="ts">
-  import Background from './lib/Background.svelte';
-  import Background2 from './lib/Background2.svelte';
+  import Background from './lib/Backgrounds/Background.svelte';
+  import Background2 from './lib/Backgrounds/Background2.svelte';
   import About from './lib/About.svelte';
   import './app.css';
+  import ProjectModal from './lib/Project/ProjectModal.svelte';
 </script>
 
 <div class="grid page-stack h-full">
-  <div class="hidden sm:block">
-    <Background2 />
-  </div>
-  <div class="sm:hidden">
+  <div class="pointer-events-none">
     <Background />
   </div>
+  <div class="pointer-events-none">
+    <Background2 />
+  </div>
   <About />
+  <ProjectModal />
 </div>
 
 <style lang="scss">

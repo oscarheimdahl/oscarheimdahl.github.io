@@ -4,17 +4,20 @@
   import chatup from '../assets/chatup.png';
   import washTime from '../assets/wash-time.png';
   import Paragraph from './Paragraph.svelte';
-  import ProjectImage from './ProjectButton.svelte';
+  import ProjectButton from './Project/ProjectButton.svelte';
   import Heading from './Heading.svelte';
   import Confetti from './Icons/Confetti.svelte';
   import Glitter from './Icons/Glitter.svelte';
   import { explode } from '../konva/confetti';
   import { startBubbles } from '../konva/bubbles';
   import Bubbles from './Icons/Bubbles.svelte';
+  import { hideBackground } from '../store/store';
+  import ModeButton from './ModeButton.svelte';
+  import { toggleOrbs } from '../konva/orbs';
 
   let hideContent = false;
-  let confettiMode = false;
-  let bubbleMode = false;
+  type Mode = 'confetti' | 'bubbles' | 'orbs' | '';
+  let mode: Mode = '';
   let bubbleModeInterval;
 
   onMount(() => {
@@ -33,32 +36,48 @@
   function fireConfetti(e: MouseEvent) {
     const mouseX = e.x;
     const mouseY = e.y;
-    if (confettiMode) explode({ x: mouseX, y: mouseY });
+    if (mode === 'confetti') explode({ x: mouseX, y: mouseY });
+    if (mode === 'orbs') {
+      toggleOrbs({ x: mouseX, y: mouseY });
+    }
   }
 
-  function toggleConfettiMode(e: MouseEvent) {
-    if (confettiMode) return (confettiMode = false);
+  function toggleMode(e: MouseEvent, _mode: Mode) {
     e.stopPropagation();
-    setTimeout(() => {
-      confettiMode = !confettiMode;
-      bubbleMode = false;
+    if (mode === _mode) {
       clearInterval(bubbleModeInterval);
-    });
-  }
-  function toggleBubbleMode(e: MouseEvent) {
+      hideBackground.set(false);
+      mode = '';
+      document.body.style.cursor = 'initial';
+      return;
+    }
+    document.body.style.cursor = 'pointer';
+    hideBackground.set(true);
     clearInterval(bubbleModeInterval);
-    if (bubbleMode) return (bubbleMode = false);
-    e.stopPropagation();
-    bubbleMode = true;
     setTimeout(() => {
-      if (!document.hasFocus()) return;
-      confettiMode = false;
-      startBubbles({ x: Math.random() * window.innerWidth });
-      bubbleModeInterval = setInterval(() => {
+      mode = _mode;
+      if (mode === 'bubbles') {
         startBubbles({ x: Math.random() * window.innerWidth });
-      }, 10000);
+        bubbleModeInterval = setInterval(
+          () => startBubbles({ x: Math.random() * window.innerWidth }),
+          10000
+        );
+      }
     });
   }
+
+  // function toggleBubbleMode(e: MouseEvent) {
+  //   if (mode === 'bubble') return modeOff(e);
+
+  //   setTimeout(() => {
+  //     if (!document.hasFocus()) return;
+  //     confettiMode = false;
+  //     startBubbles({ x: Math.random() * window.innerWidth });
+  //     bubbleModeInterval = setInterval(() => {
+  //       startBubbles({ x: Math.random() * window.innerWidth });
+  //     }, 10000);
+  //   });
+  // }
 </script>
 
 <div
@@ -78,24 +97,15 @@
       <img src={oscar} alt="oscar" class="profile-img w-64 h-64 rounded-3xl" />
     </div>
     <div class="absolute top-0 right-0 m-3 justify-end gap-2 hidden sm:flex">
-      <button
-        on:click={toggleConfettiMode}
-        class="group p-1 rounded-md scale-125 hover:bg-slate-300"
-      >
-        <Confetti colored={confettiMode} />
-      </button>
-      <button
-        on:click={toggleBubbleMode}
-        class="group p-1 rounded-md scale-125 hover:bg-slate-300"
-      >
-        <Glitter colored={bubbleMode} />
-      </button>
-      <button
-        on:click={toggleBubbleMode}
-        class="group p-1 rounded-md scale-125 hover:bg-slate-300"
-      >
-        <Bubbles colored={bubbleMode} />
-      </button>
+      <ModeButton on:click={(e) => toggleMode(e, 'confetti')}>
+        <Confetti colored={mode === 'confetti'} />
+      </ModeButton>
+      <ModeButton on:click={(e) => toggleMode(e, 'bubbles')}>
+        <Bubbles colored={mode === 'bubbles'} />
+      </ModeButton>
+      <ModeButton on:click={(e) => toggleMode(e, 'orbs')}>
+        <Glitter colored={mode === 'orbs'} />
+      </ModeButton>
     </div>
     <div class=" flex flex-col gap-8">
       <div>
@@ -144,8 +154,8 @@
           spännande teknologier, exempel på vad jag hittat på hittar du här.
         </Paragraph>
         <div class="flex gap-8 justify-center mt-4">
-          <ProjectImage img={chatup} alt={'chatt-projekt'} />
-          <ProjectImage img={washTime} alt={'tvättids-projekt'} />
+          <ProjectButton name="ChatUp" index={1} img={chatup} />
+          <ProjectButton name="Tvättid" index={2} img={washTime} />
         </div>
       </div>
       <div>
