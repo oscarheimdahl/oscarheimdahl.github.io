@@ -15,16 +15,20 @@
   let dragElement: HTMLDivElement;
   let holdInterval: number;
 
-  function hold(e) {
-    if (e.target.id !== 'main-modal') return;
+  function hold(e: MouseEvent) {
+    const target = e.target as HTMLElement;
+    if (target.id !== 'main-modal') return;
+    if (e.button !== 0) return; // not left click
     startMouseX = mouseX - offsetX;
     startMouseY = mouseY - offsetY;
     holdInterval = setInterval(updateModalPosition, 10);
   }
 
-  function unHold(e, mouseout) {
-    if (mouseout && dragElement.contains(e.target)) return;
+  function unHold(e: Event, mouseout: boolean) {
+    const target = e.target as HTMLElement;
+    if (mouseout && dragElement.contains(target)) return;
     clearInterval(holdInterval);
+    holdInterval = undefined;
   }
 
   function updateModalPosition() {
@@ -51,20 +55,19 @@
     class="cursor-move"
     style={`transform: translateX(${offsetX}px) translateY(${offsetY}px);`}
   >
-    <div
-      id="main-modal"
-      class="p-6 pt-40 scale-50 bg-light2 rounded-lg shadow-lg relative cursor-move"
-    >
-      <div class="pointer-events-none select-none">
-        <div
-          class="absolute top-2 left-2 opacity-20 pointer-events-none select-none"
-        >
+    <div class:scale-90={holdInterval} class="transition-transform">
+      <div
+        class:shadow-sm={holdInterval}
+        id="main-modal"
+        class="p-6 transition-shadow pt-40 scale-50 bg-light2 rounded-lg shadow-lg relative cursor-move"
+      >
+        <div class="pointer-events-none select-none">
           <DragIndicator />
+          <ProfileImage />
+          <AboutText />
         </div>
-        <ProfileImage />
-        <AboutText />
+        <LinkRow />
       </div>
-      <LinkRow />
     </div>
   </div>
 </div>

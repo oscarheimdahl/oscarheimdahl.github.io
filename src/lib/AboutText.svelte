@@ -12,10 +12,10 @@
     display: inline-block;
     transform-origin: 70% 70%;
     animation: wave;
-    animation-duration: 0.5s;
+    animation-duration: 10s;
     animation-fill-mode: forwards;
-    animation-delay: 2s;
-    animation-iteration-count: 1;
+    /* animation-delay: 2s; */
+    animation-iteration-count: infinite;
     /* animation-timing-function: linear; */
     transform: rotate(0deg);
     animation-timing-function: cubic-bezier(0.5, -0.44, 0.58, 1.37);
@@ -25,8 +25,11 @@
     0% {
       transform: rotate(0deg);
     }
-    50% {
-      transform: rotate(20deg);
+    90% {
+      transform: rotate(0deg);
+    }
+    95% {
+      transform: rotate(30deg);
     }
     100% {
       transform: rotate(0deg);

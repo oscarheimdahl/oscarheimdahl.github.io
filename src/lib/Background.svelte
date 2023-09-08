@@ -1,9 +1,34 @@
 <script>
+  import { onMount } from 'svelte';
+  import { buildBackground, init, setPause } from './konva/stage';
+  // import { explode } from './konva/_confetti';
+
+  onMount(() => {
+    init();
+    buildBackground();
+    // setPause(true);
+    // setTimeout(() => setPause(false), 2000);
+    // explode({ x: 300, y: 200 });
+  });
 </script>
 
-<div class="absolute w-full h-full bg-light1">
-  <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5">
-    <rect width="5" height="5" fill="#fff" />
-    <rect width="1" height="1" fill="#ccc" />
+<!-- <div class="absolute w-full h-full bg-light1 flex flex-wrap">
+  <svg width="100%" height="100%">
+    <defs>
+      <pattern
+        id="dots"
+        x="0"
+        y="0"
+        width="20"
+        height="20"
+        patternUnits="userSpaceOnUse"
+      >
+        <circle fill="#777" cx="14" cy="12" r="1" />
+      </pattern>
+    </defs>
+
+    <rect x="0" y="0" width="100%" height="100%" fill="url(#dots)" />
   </svg>
-</div>
+</div> -->
+
+<div class="absolute w-full h-full bg-light1" id="container" />
