@@ -3,17 +3,69 @@
   import AboutText from './AboutText.svelte';
   import LinkRow from './LinkRow.svelte';
   import ProfileImage from './ProfileImage.svelte';
+  import DragIndicator from './icons/DragIndicator.svelte';
+
+  let offsetX = 0;
+  let offsetY = 0;
+  let mouseX = 0;
+  let mouseY = 0;
+  let startMouseX = 0;
+  let startMouseY = 0;
+
+  let dragElement: HTMLDivElement;
+  let holdInterval: number;
+
+  function hold(e) {
+    if (e.target.id !== 'main-modal') return;
+    startMouseX = mouseX - offsetX;
+    startMouseY = mouseY - offsetY;
+    holdInterval = setInterval(updateModalPosition, 10);
+  }
+
+  function unHold(e, mouseout) {
+    if (mouseout && dragElement.contains(e.target)) return;
+    clearInterval(holdInterval);
+  }
+
+  function updateModalPosition() {
+    if (!dragElement) return;
+    offsetX = mouseX - startMouseX;
+    offsetY = mouseY - startMouseY;
+  }
 </script>
 
+<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div
-  id="main-modal"
-  class="p-6 scale-50 bg-light2 rounded-lg shadow-lg relative cursor-move"
+  id="modal-background"
+  class="relative grid place-content-center h-full w-full text-dark2"
+  on:mousemove={(e) => {
+    mouseX = e.x;
+    mouseY = e.y;
+  }}
 >
-  <div class="w-60 h-32" />
-  <ProfileImage />
-  <div class="flex flex-col gap-3">
-    <AboutText />
-    <LinkRow />
+  <div
+    bind:this={dragElement}
+    on:mousedown={hold}
+    on:mouseup={(e) => unHold(e, false)}
+    on:mouseout={(e) => unHold(e, true)}
+    class="cursor-move"
+    style={`transform: translateX(${offsetX}px) translateY(${offsetY}px);`}
+  >
+    <div
+      id="main-modal"
+      class="p-6 pt-40 scale-50 bg-light2 rounded-lg shadow-lg relative cursor-move"
+    >
+      <div class="pointer-events-none select-none">
+        <div
+          class="absolute top-2 left-2 opacity-20 pointer-events-none select-none"
+        >
+          <DragIndicator />
+        </div>
+        <ProfileImage />
+        <AboutText />
+      </div>
+      <LinkRow />
+    </div>
   </div>
 </div>
 

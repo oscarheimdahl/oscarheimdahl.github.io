@@ -5,7 +5,7 @@
   import LinkedIn from './icons/LinkedIn.svelte';
 </script>
 
-<div class="flex gap-1 justify-center mt-4">
+<div class="flex gap-2 justify-center mt-4 non-drag w-fit mx-auto">
   <Link href="https://www.linkedin.com/in/oscar-heimdahl-9b9428152/">
     <LinkedIn />
   </Link>
@@ -18,3 +18,9 @@
     </div>
   </Link>
 </div>
+
+<style>
+  .non-drag {
+    -webkit-user-drag: none;
+  }
+</style>
