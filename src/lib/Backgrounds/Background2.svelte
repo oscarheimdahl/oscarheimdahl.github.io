@@ -12,7 +12,7 @@
       to = setTimeout(() => {
         buildBackground();
         to = undefined;
-      }, 1000);
+      }, 100);
     });
   });
 </script>

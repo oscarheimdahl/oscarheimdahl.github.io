@@ -9,14 +9,14 @@
   import Confetti from './Icons/Confetti.svelte';
   import Glitter from './Icons/Glitter.svelte';
   import { explode } from '../konva/confetti';
-  import { startBubbles } from '../konva/bubbles';
   import Bubbles from './Icons/Bubbles.svelte';
   import { hideBackground } from '../store/store';
   import ModeButton from './ModeButton.svelte';
+  import { fireSpiral } from '../konva/spiral';
   import { toggleOrbs } from '../konva/orbs';
 
   let hideContent = false;
-  type Mode = 'confetti' | 'bubbles' | 'orbs' | '';
+  type Mode = 'confetti' | 'orbs' | 'spiral' | '';
   let mode: Mode = '';
   let bubbleModeInterval;
 
@@ -26,24 +26,24 @@
       hideContent = false;
     }, 2000);
 
-    document.addEventListener('click', fireConfetti);
+    document.addEventListener('click', handleClick);
   });
 
   onDestroy(() => {
-    document.removeEventListener('click', fireConfetti);
+    document.removeEventListener('click', handleClick);
   });
 
-  function fireConfetti(e: MouseEvent) {
+  function handleClick(e: MouseEvent) {
     const mouseX = e.x;
     const mouseY = e.y;
     if (mode === 'confetti') explode({ x: mouseX, y: mouseY });
-    if (mode === 'orbs') {
-      toggleOrbs({ x: mouseX, y: mouseY });
-    }
+    if (mode === 'spiral') fireSpiral({ x: mouseX, y: mouseY });
+    // if (mode === 'orbs') toggleOrbs({ x: mouseX, y: mouseY });
   }
 
   function toggleMode(e: MouseEvent, _mode: Mode) {
     e.stopPropagation();
+    toggleOrbs(false);
     if (mode === _mode) {
       clearInterval(bubbleModeInterval);
       hideBackground.set(false);
@@ -56,13 +56,7 @@
     clearInterval(bubbleModeInterval);
     setTimeout(() => {
       mode = _mode;
-      if (mode === 'bubbles') {
-        startBubbles({ x: Math.random() * window.innerWidth });
-        bubbleModeInterval = setInterval(
-          () => startBubbles({ x: Math.random() * window.innerWidth }),
-          10000
-        );
-      }
+      if (_mode === 'orbs') toggleOrbs(true);
     });
   }
 
@@ -100,11 +94,11 @@
       <ModeButton on:click={(e) => toggleMode(e, 'confetti')}>
         <Confetti colored={mode === 'confetti'} />
       </ModeButton>
-      <ModeButton on:click={(e) => toggleMode(e, 'bubbles')}>
-        <Bubbles colored={mode === 'bubbles'} />
-      </ModeButton>
       <ModeButton on:click={(e) => toggleMode(e, 'orbs')}>
-        <Glitter colored={mode === 'orbs'} />
+        <Bubbles colored={mode === 'orbs'} />
+      </ModeButton>
+      <ModeButton on:click={(e) => toggleMode(e, 'spiral')}>
+        <Glitter colored={mode === 'spiral'} />
       </ModeButton>
     </div>
     <div class=" flex flex-col gap-8">

@@ -13,7 +13,7 @@
       to = setTimeout(() => {
         linesNum = Math.floor(window.innerWidth / 40);
         to = undefined;
-      }, 1000);
+      }, 100);
     });
   });
 </script>

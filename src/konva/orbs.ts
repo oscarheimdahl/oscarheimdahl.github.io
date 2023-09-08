@@ -3,7 +3,7 @@ import Konva from 'Konva';
 import type { Circle } from 'Konva/lib/shapes/Circle';
 import type { Rect } from 'Konva/lib/shapes/Rect';
 import Victor from 'victor';
-import { layer, map } from './background';
+import { inViewport, layer, map } from './background';
 
 type Orb = {
   circle: Circle;
@@ -16,66 +16,90 @@ type Orb = {
 
 let orbs: Orb[] = []; // buildCircles();
 
-export function toggleOrbs({
-  x = Math.random() * window.innerWidth,
-  y = Math.random() * window.innerHeight,
-  n = 400,
-}: {
-  x?: number;
-  y?: number;
-  n?: number;
-}) {
-  if (orbs.length > 3000) return;
-  const speed = 10;
-  const S = 60;
+let mouseX = 0;
+let mouseY = 0;
 
-  for (let i = 0; i < n; i++) {
-    const H = Math.floor(Math.random() * 20);
-    const L = Math.floor(Math.random() * 70 + 30);
-    const angle = Math.random() * 360;
-    const velocity = new Victor(
-      Math.random() * speed + speed / 2,
-      0
-    ).rotateByDeg(angle);
-    const orb = buildOrb({
-      x,
-      y,
-      w: map(velocity.length(), speed / 2, speed + speed / 2, 4, 20),
-      velocity: velocity,
-      fill: `hsl(${H} ${S}% ${L}%)`,
-    });
-    orbs.push(orb);
-  }
-  return true;
+function handleMouseMove(e: MouseEvent) {
+  mouseX = e.x;
+  mouseY = e.y;
 }
 
+export function toggleOrbs(toggle: boolean) {
+  // mouseX = x;
+  // mouseY = y;
+  if (!toggle) {
+    resetOrbs();
+    document.removeEventListener('mousemove', handleMouseMove);
+    return;
+  }
+  document.addEventListener('click', () => (enablePush = !enablePush));
+  document.addEventListener('mousemove', handleMouseMove);
+  new Array(10000).fill(0).forEach((_, i) => {
+    orbs.push(
+      buildOrb({
+        w: 4,
+        x: Math.floor(Math.random() * window.innerWidth),
+        y: Math.floor(Math.random() * window.innerHeight),
+      })
+    );
+  });
+}
+let enablePush = false;
+let dist = 200;
 export function moveOrbs() {
   const width = window.innerWidth;
   const height = window.innerHeight;
   const nextOrbs = [];
+  if (mouseX + mouseY === 0) return;
   orbs.forEach((orb, i) => {
-    // orb.acceleration = new Victor(0, 0.1); //targetVec;
+    const mousePos = new Victor(mouseX, mouseY);
+    const mag = mousePos.distance(orb.location);
+    const maxMag = 40;
+    const mappedMag = map(mag, 0, window.innerWidth, maxMag, 0);
+    if (mag < dist && enablePush) {
+      orb.acceleration = mousePos
+        .subtract(orb.location)
+        .normalize()
+        .multiplyScalar(mappedMag)
+        .invert();
+    } else {
+      const homeDiff = orb.home.distance(orb.location);
+      orb.acceleration = orb.home
+        .clone()
+        .subtract(orb.location)
+        .normalize()
+        .multiplyScalar(0.2);
+      orb.velocity.multiplyScalar(0.98);
+      orb.velocity.limit(3, 0.5);
+      if (homeDiff < 5) {
+        orb.acceleration.multiply(new Victor(0.2, 0.2));
+        if (orb.acceleration.magnitude() < 5)
+          orb.acceleration = new Victor(0, 0);
+      }
+    }
 
     orb.velocity.add(orb.acceleration);
+
     orb.location.add(orb.velocity);
-    orb.velocity.rotateDeg(0.5);
+    // orb.velocity.limit(1, 0.9);
+
+    // add(orb.velocity);
+
     orb.circle.x(orb.location.x);
     orb.circle.y(orb.location.y);
 
-    const inViewport =
-      orb.circle.y() > 0 &&
-      orb.circle.y() < height &&
-      orb.circle.x() > 0 &&
-      orb.circle.x() < width;
+    const keepParticle = true; //inViewport(orb.circle, {});
 
-    if (inViewport) nextOrbs.push(orb);
+    if (keepParticle) nextOrbs.push(orb);
     else orb.circle.remove();
   });
 
   orbs = nextOrbs;
+  enablePush = false;
 }
 
-export function resetConfetti() {
+export function resetOrbs() {
+  orbs.forEach((orb) => orb.circle.remove());
   orbs = [];
 }
 

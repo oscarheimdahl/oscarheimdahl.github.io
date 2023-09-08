@@ -3,7 +3,7 @@ import Konva from 'Konva';
 import type { Circle } from 'Konva/lib/shapes/Circle';
 import type { Rect } from 'Konva/lib/shapes/Rect';
 import Victor from 'victor';
-import { layer } from './background';
+import { inViewport, layer } from './background';
 
 type Confetti = {
   rect: Rect;
@@ -61,12 +61,9 @@ export function moveConfetti() {
     confetti.rect.y(confetti.location.y);
     confetti.rect.rotate(1);
 
-    const outsideScreen =
-      confetti.rect.y() < height &&
-      confetti.rect.x() > 0 &&
-      confetti.rect.x() < width;
+    const keepParticle = inViewport(confetti.rect, { top: true });
 
-    if (outsideScreen) nextCircles.push(confetti);
+    if (keepParticle) nextCircles.push(confetti);
     else confetti.rect.remove();
   });
 
