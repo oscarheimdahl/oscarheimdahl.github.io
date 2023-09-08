@@ -1,0 +1,9 @@
+<script>
+</script>
+
+<div class="absolute w-full h-full bg-red-300">
+  <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5">
+    <rect width="5" height="5" fill="#fff" />
+    <rect width="1" height="1" fill="#ccc" />
+  </svg>
+</div>
