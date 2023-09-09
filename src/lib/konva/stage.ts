@@ -2,7 +2,7 @@ import Konva from 'Konva';
 import type { Layer } from 'Konva/lib/Layer';
 import type { Stage } from 'Konva/lib/Stage';
 import type { Shape } from 'Konva/lib/Shape';
-import { moveConfetti, resetConfetti } from './dots';
+import { moveConfetti, buildDots } from './dots';
 
 let stage: Stage;
 export let layer = new Konva.Layer();
@@ -22,7 +22,7 @@ export function buildBackground() {
   stage.removeChildren();
   layer = new Konva.Layer();
   stage.add(layer);
-  resetConfetti();
+  buildDots();
 
   if (!rendering) {
     move();
