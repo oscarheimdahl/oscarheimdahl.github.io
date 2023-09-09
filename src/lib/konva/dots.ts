@@ -5,9 +5,10 @@ import type { Rect } from 'Konva/lib/shapes/Rect';
 import Victor from 'victor';
 import { inViewport, layer, map } from './stage';
 import type { Circle } from 'konva/lib/shapes/Circle';
+import { createNoise3D } from 'simplex-noise';
 
 type Confetti = {
-  rect: Circle;
+  render: Circle;
   location: Victor;
   velocity: Victor;
   acceleration: Victor;
@@ -15,81 +16,80 @@ type Confetti = {
   remove: boolean;
 };
 
+const noise3D = createNoise3D();
 let dots: Confetti[] = []; // buildCircles();
-let mouseX: number;
-let mouseY: number;
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
 document.addEventListener('mousemove', (e) => {
   mouseX = e.x;
   mouseY = e.y;
 });
 
-// export function explode({
-//   x = Math.random() * window.innerWidth,
-//   y = Math.random() * window.innerHeight,
-//   n = 400,
-// }: {
-//   x?: number;
-//   y?: number;
-//   n?: number;
-// }) {
-//   if (dots.length > 2000) return;
-//   const speed = 10;
-//   const S = 60;
-
-//   for (let i = 0; i < n; i++) {
-//     const H = Math.floor(Math.random() * 255);
-//     const L = Math.floor(Math.random() * 70 + 30);
-//     const angle = Math.random() * 360;
-//     const circle = buildDot({
-//       x,
-//       y,
-//       w: 4,
-//       velocity: new Victor(Math.random() * speed - speed / 2, 0)
-//         .rotateByDeg(angle)
-//         .add(new Victor(0, -3))
-//         .multiplyScalar(2),
-//       fill: `hsl(${H} ${S}% ${L}%)`,
-//     });
-//     dots.push(circle);
-//   }
-//   return true;
-// }
+let z = 0;
+let min = 0;
+let max = 0;
 
 export function moveConfetti() {
   const width = window.innerWidth;
   const height = window.innerHeight;
   const nextDots = [];
-  dots.forEach((confetti, i) => {
+  dots.forEach((dot, i) => {
     // confetti.acceleration = new Victor(0, 0.4); //targetVec;
 
     // confetti.velocity.add(confetti.acceleration);
     // confetti.location.add(confetti.velocity);
-    const distance = new Victor(mouseX, mouseY).subtract(confetti.location);
 
+    const distance = new Victor(mouseX, mouseY).subtract(dot.location);
     const dist = distance.length();
-    confetti.rect.x(confetti.location.x);
-    confetti.rect.y(confetti.location.y);
-    if (dist < 400) {
-      confetti.rect.scale({ x: 2, y: 2 });
-    } else {
-      confetti.rect.scale({ x: 0, y: 0 });
-    }
-    confetti.rect.rotate(0.5);
+    const mappedDist = map(dist, 0, window.innerWidth, 10, 1);
+    // const clampedDist = Math.min(Math.max(mappedDist, 0), 2);
+    // const mappedScale = map(scaleNoise, -1, 1, 0, 1);
 
-    const keepParticle = inViewport(confetti.rect, { top: true });
+    // if (dist < 400) {
+    //   if (dot.render.fill() === '#2d2d2d') {
+    //     const H = Math.floor(Math.random() * 255);
+    //     const L = Math.floor(Math.random() * 40) + 40;
+    //     dot.render.fill(`hsl(${H} ${60}% ${L}%)`);
+    //     // dot.render.scale({ x: 2, y: 2 });
+    //     dot.render.scale({ x: mappedDist, y: mappedDist });
+    //   }
+    // } else {
+    //   dot.render.fill('#2d2d2d');
+    //   dot.render.scale({ x: 1, y: 1 });
+    // }
 
-    if (keepParticle) nextDots.push(confetti);
-    else confetti.rect.remove();
+    const offsetXNoise = noise3D(dot.location.x / 500, dot.location.y / 500, z);
+    const offsetYNoise = noise3D(
+      dot.location.x / 500,
+      dot.location.y / 500,
+      -z
+    );
+    const mappedOffsetX = map(offsetXNoise, -1, 1, 0, 10);
+    const mappedOffsetY = map(offsetYNoise, -1, 1, 0, 10);
+
+    dot.render.offsetX(mappedOffsetX);
+    dot.render.offsetY(mappedOffsetY);
+
+    // dot.render.fill;
+    // dot.render.scale({ x: clampedDist, y: clampedDist });
+    dot.render.x(dot.location.x);
+    dot.render.y(dot.location.y);
+
+    const keepParticle = inViewport(dot.render, { top: true });
+
+    if (keepParticle) nextDots.push(dot);
+    else dot.render.remove();
   });
 
   dots = nextDots;
+  z += 0.001;
 }
 
 export function resetConfetti() {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const dim = 1;
-  const gap = 30;
+  const dim = 3;
+  const gap = 60;
   const cols = Math.floor(width / (dim + gap));
   const rows = Math.floor(height / (dim + gap));
   const xOffset = cols * (dim + gap) - window.innerWidth;
@@ -124,6 +124,9 @@ function buildDot({
   location = new Victor(x, y),
   fill = '#2d2d2d',
 }: BuildCircleArgs) {
+  // const H = Math.floor(Math.random() * 255);
+  // const L = Math.floor(Math.random() * 70);
+  // fill = `hsl(${H} ${60}% ${L}%)`;
   // const rand = Math.random();
   // if (rand > 0.33) fill = 'blue';
   // if (rand > 0.66) fill = 'red';
@@ -133,14 +136,13 @@ function buildDot({
     width: w / 2,
     height: (w / 2) * 3,
     fill,
-    rotation: Math.floor(Math.random() * 360),
     listening: false,
     cornerRadius: 10,
   });
   layer.add(rect);
 
   return {
-    rect: rect,
+    render: rect,
     velocity,
     acceleration: new Victor(0, 0),
     location,

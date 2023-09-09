@@ -6,9 +6,16 @@
   onMount(() => {
     init();
     buildBackground();
-    // setPause(true);
-    // setTimeout(() => setPause(false), 2000);
-    // explode({ x: 300, y: 200 });
+
+    let to;
+    window.addEventListener('resize', () => {
+      clearTimeout(to);
+
+      to = setTimeout(() => {
+        buildBackground();
+        to = undefined;
+      }, 100);
+    });
   });
 </script>
 

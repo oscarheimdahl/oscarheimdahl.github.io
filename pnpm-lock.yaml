@@ -7,6 +7,7 @@ specifiers:
   autoprefixer: ^10.4.14
   konva: ^9.0.2
   postcss: ^8.4.23
+  simplex-noise: ^4.0.1
   svelte: ^3.57.0
   svelte-check: ^2.10.3
   tailwindcss: ^3.3.2
@@ -18,6 +19,7 @@ specifiers:
 dependencies:
   '@types/victor': 1.1.0
   konva: 9.0.2
+  simplex-noise: 4.0.1
   victor: 1.1.0
 
 devDependencies:
@@ -972,6 +974,10 @@ packages:
       immutable: 4.3.0
       source-map-js: 1.0.2
     dev: true
+
+  /simplex-noise/4.0.1:
+    resolution: {integrity: sha512-zl/+bdSqW7HJOQ0oDbxrNYaF4F5ik0i7M6YOYmEoIJNtg16NpvWaTTM1Y7oV/7T0jFljawLgYPS81Uu2rsfo1A==}
+    dev: false
 
   /sorcery/0.10.0:
     resolution: {integrity: sha512-R5ocFmKZQFfSTstfOtHjJuAwbpGyf9qjQa1egyhvXSbM7emjrtLXtGdZsDJDABC85YBfVvrOiGWKSYXPKdvP1g==}
