@@ -41,7 +41,7 @@
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div
   id="modal-background"
-  class="relative grid place-content-center h-full w-3/5 text-dark2"
+  class="relative grid place-content-center h-full text-dark2 w-full md:w-3/5"
   on:mousemove={(e) => {
     mouseX = e.x;
     mouseY = e.y;
@@ -77,7 +77,7 @@
     animation: drop-in;
     animation-duration: 400ms;
     animation-fill-mode: forwards;
-    animation-delay: 0.1s;
+    animation-delay: 300ms;
     animation-iteration-count: 1;
     animation-timing-function: cubic-bezier(0.47, 1.64, 0.41, 0.8);
   }

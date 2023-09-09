@@ -43,8 +43,8 @@
 <style>
   div {
     animation: fade-in;
-    animation-duration: 400ms;
-    animation-delay: 600ms;
+    animation-duration: 900ms;
+    animation-delay: 500ms;
     animation-fill-mode: forwards;
     animation-iteration-count: 1;
   }
