@@ -10,29 +10,18 @@ import { createNoise3D } from 'simplex-noise';
 let z = 0;
 let mobile = false;
 let dotColor = '#444';
-const dotColorMove = '#FDFDF1';
+let clicks = 0;
 const radius = 400;
 
-export function moveConfetti() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+export function moveDots() {
   const nextDots = [];
+  let maxScale = 8;
   dots.forEach((dot, i) => {
     const dist = new Victor(mouseX, mouseY).subtract(dot.location).length();
-    const mappedScale = map(dist, 0, radius, 5, 1);
+    const mappedScale = map(dist, 0, radius, maxScale, 1);
     const scale = dot.randomColor ? Math.max(mappedScale, 1) : 1;
 
     if (!mobile) {
-      if (!dot.randomColor) {
-        if (dist < radius && dot.render.fill() === dotColor) {
-          // dot.render.fill(dotColorMove);
-          // dot.render.opacity(0);
-        }
-        if (dist > radius) {
-          // dot.render.opacity(1);
-          // dot.render.fill(dotColor);
-        }
-      }
       dot.render.scale({ x: scale, y: scale });
     }
 
@@ -54,14 +43,13 @@ export function moveConfetti() {
   });
 
   dots = nextDots;
-  z += 0.002;
+  z += mobile ? 0.004 : 0.002;
 }
 
 export function buildDots() {
   const width = window.innerWidth;
   const height = window.innerHeight;
   mobile = width < 800;
-  if (mobile) dotColor = dotColorMove;
   const dim = 3;
   const gap = mobile ? 40 : 60;
   const cols = Math.floor(width / (dim + gap)) + 2;
@@ -71,6 +59,7 @@ export function buildDots() {
   dots = [];
   for (let x = 0; x < cols; x++) {
     for (let y = 0; y < rows; y++) {
+      if (Math.random() > 0.7) continue;
       const builtDot = buildDot({
         w: dim,
         x: x * (dim + gap) - xOffset - dim + gap,
@@ -98,12 +87,8 @@ function buildDot({
   location = new Victor(x, y),
   fill = dotColor,
 }: BuildCircleArgs) {
-  const H = Math.floor(Math.random() * 255);
-  const L = Math.floor(Math.random() * 30) + 30;
-  const randomColor = `hsl(${H} ${60}% ${L}%)`;
+  const randomColor = getRandomColor();
   const useRandomColor = Math.random() < (mobile ? 0.4 : 0.5);
-
-  if (Math.random() > 0.7) return;
 
   const rect = new Konva.Circle({
     x,
@@ -127,6 +112,14 @@ function buildDot({
   };
 }
 
+function getRandomColor() {
+  const rand = Math.random();
+  if (rand > 0.75) return '#CF2C4F';
+  if (rand > 0.5) return '#0E98E9';
+  if (rand > 0.25) return `#F4A259`;
+  return `#3AB895`;
+}
+
 type Confetti = {
   render: Circle;
   location: Victor;
@@ -145,3 +138,12 @@ document.addEventListener('mousemove', (e) => {
   mouseX = e.x;
   mouseY = e.y;
 });
+
+// let clickTimout
+// document.addEventListener('click', (e) => {
+//   function grow(){
+//     clickTimout =setTimeout(()=>{
+//       clicks++;
+//     },50)
+//   }
+// });

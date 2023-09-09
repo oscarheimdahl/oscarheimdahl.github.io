@@ -18,7 +18,7 @@
   function hold(e: MouseEvent) {
     const target = e.target as HTMLElement;
     if (target.id !== 'main-modal') return;
-    if (e.button !== 0) return; // not left click
+    if (e.button !== 0) return; // only allow left click
     startMouseX = mouseX - offsetX;
     startMouseY = mouseY - offsetY;
     holdInterval = setInterval(updateModalPosition, 10);
@@ -41,7 +41,7 @@
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div
   id="modal-background"
-  class="relative grid place-content-center h-full w-full text-dark2"
+  class="relative grid place-content-center h-full w-3/5 text-dark2"
   on:mousemove={(e) => {
     mouseX = e.x;
     mouseY = e.y;

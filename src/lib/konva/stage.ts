@@ -2,7 +2,7 @@ import Konva from 'Konva';
 import type { Layer } from 'Konva/lib/Layer';
 import type { Stage } from 'Konva/lib/Stage';
 import type { Shape } from 'Konva/lib/Shape';
-import { moveConfetti, buildDots } from './dots';
+import { moveDots, buildDots } from './dots';
 
 let stage: Stage;
 export let layer = new Konva.Layer();
@@ -38,7 +38,7 @@ export function setPause(_pause: boolean) {
 
 function move() {
   if (pause) return;
-  moveConfetti();
+  moveDots();
   requestAnimationFrame(move);
 }
 
