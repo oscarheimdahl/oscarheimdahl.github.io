@@ -38,4 +38,23 @@
   </svg>
 </div> -->
 
-<div class="absolute w-full h-full bg-light1" id="container" />
+<div class="opacity-0 absolute w-full h-full bg-light1" id="container" />
+
+<style>
+  div {
+    animation: fade-in;
+    animation-duration: 400ms;
+    animation-delay: 600ms;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+</style>
