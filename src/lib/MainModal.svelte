@@ -16,6 +16,8 @@
   let holdInterval: number;
 
   function hold(e: MouseEvent) {
+    clearInterval(holdInterval);
+    holdInterval = undefined;
     const target = e.target as HTMLElement;
     if (target.id !== 'main-modal') return;
     if (e.button !== 0) return; // only allow left click
