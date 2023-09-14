@@ -15,22 +15,30 @@
   let dragElement: HTMLDivElement;
   let holdInterval: number;
 
-  function hold(e: MouseEvent) {
+  onMount(() => {
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.x;
+      mouseY = e.y;
+    });
+  });
+
+  function startHold() {
+    startMouseX = mouseX - offsetX;
+    startMouseY = mouseY - offsetY;
+    holdInterval = setInterval(updateModalPosition, 5);
+  }
+
+  function stopHold() {
     clearInterval(holdInterval);
     holdInterval = undefined;
+  }
+
+  function handleMouseDown(e: MouseEvent) {
+    stopHold();
     const target = e.target as HTMLElement;
     if (target.id !== 'main-modal') return;
     if (e.button !== 0) return; // only allow left click
-    startMouseX = mouseX - offsetX;
-    startMouseY = mouseY - offsetY;
-    holdInterval = setInterval(updateModalPosition, 10);
-  }
-
-  function unHold(e: Event, mouseout: boolean) {
-    const target = e.target as HTMLElement;
-    if (mouseout && dragElement.contains(target)) return;
-    clearInterval(holdInterval);
-    holdInterval = undefined;
+    startHold();
   }
 
   function updateModalPosition() {
@@ -43,17 +51,12 @@
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div
   id="modal-background"
-  class="relative grid place-content-center h-full text-dark2 w-full md:w-3/5 pointer-events-none"
-  on:mousemove={(e) => {
-    mouseX = e.x;
-    mouseY = e.y;
-  }}
+  class="relative grid place-content-center h-full w-full md:w-3/5 pointer-events-none"
 >
   <div
     bind:this={dragElement}
-    on:mousedown={hold}
-    on:mouseup={(e) => unHold(e, false)}
-    on:mouseout={(e) => unHold(e, true)}
+    on:mousedown={handleMouseDown}
+    on:mouseup={stopHold}
     class="cursor-move pointer-events-auto"
     style={`transform: translateX(${offsetX}px) translateY(${offsetY}px);`}
   >
@@ -61,7 +64,7 @@
       <div
         class:shadow-sm={holdInterval}
         id="main-modal"
-        class="p-6 pt-8 transition-shadow scale-50 bg-light2 rounded-lg shadow-lg relative cursor-move"
+        class=" pt-8 scale-50 bg-light2 rounded-lg shadow-lg relative cursor-move transition-colors dark:bg-[rgb(25,25,25)]"
       >
         <DragIndicator />
         <div class="pointer-events-none select-none">

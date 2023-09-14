@@ -5,7 +5,7 @@
   import LinkedIn from './icons/LinkedIn.svelte';
 </script>
 
-<div class="flex gap-2 justify-center mt-4 non-drag w-fit mx-auto">
+<div class="flex gap-2 justify-center mt-4 non-drag w-fit">
   <Link href="https://www.linkedin.com/in/oscar-heimdahl-9b9428152/">
     <LinkedIn />
   </Link>

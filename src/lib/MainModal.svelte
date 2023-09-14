@@ -7,9 +7,11 @@
 </script>
 
 <Draggable>
-  <div class="pointer-events-none select-none pt-32">
+  <div class="pointer-events-none select-none px-6 pt-32">
     <ProfileImage />
     <AboutText />
   </div>
-  <LinkRow slot="clickable" />
+  <div slot="clickable" class="pb-6 w-min mx-auto">
+    <LinkRow />
+  </div>
 </Draggable>

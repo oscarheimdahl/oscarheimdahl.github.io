@@ -138,12 +138,3 @@ document.addEventListener('mousemove', (e) => {
   mouseX = e.x;
   mouseY = e.y;
 });
-
-// let clickTimout
-// document.addEventListener('click', (e) => {
-//   function grow(){
-//     clickTimout =setTimeout(()=>{
-//       clicks++;
-//     },50)
-//   }
-// });

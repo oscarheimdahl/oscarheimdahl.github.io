@@ -1,4 +1,4 @@
-<div class="absolute top-2 left-2 opacity-20">
+<div class="absolute top-2 left-2 opacity-20 pointer-events-none">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="25"
