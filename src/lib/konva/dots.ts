@@ -10,12 +10,13 @@ import { createNoise3D } from 'simplex-noise';
 let z = 0;
 let mobile = false;
 let dotColor = '#444';
-let clicks = 0;
-const radius = 400;
+let maxScale = 8;
+let perlinMovement = 0.004;
+
+const radius = 300;
 
 export function moveDots() {
   const nextDots = [];
-  let maxScale = 8;
   dots.forEach((dot, i) => {
     const dist = new Victor(mouseX, mouseY).subtract(dot.location).length();
     const mappedScale = map(dist, 0, radius, maxScale, 1);
@@ -43,7 +44,7 @@ export function moveDots() {
   });
 
   dots = nextDots;
-  z += mobile ? 0.004 : 0.002;
+  z += mobile ? perlinMovement * 2 : perlinMovement;
 }
 
 export function buildDots() {
