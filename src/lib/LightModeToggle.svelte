@@ -22,7 +22,7 @@
   }
 </script>
 
-<Draggable>
+<Draggable class="translate-x-[-138px] translate-y-[220px]">
   <div slot="clickable" class="flex gap-2 p-2">
     <button
       on:click={handleClick}

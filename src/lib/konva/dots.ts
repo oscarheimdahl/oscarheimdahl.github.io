@@ -11,7 +11,7 @@ let z = 0;
 let mobile = false;
 let dotColor = '#444';
 let maxScale = 8;
-let perlinMovement = 0.004;
+let perlinMovement = 0.002;
 
 const radius = 300;
 

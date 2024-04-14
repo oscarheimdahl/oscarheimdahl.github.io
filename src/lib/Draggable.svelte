@@ -51,7 +51,7 @@
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div
   id="modal-background"
-  class="relative grid place-content-center h-full w-full md:w-3/5 pointer-events-none"
+  class={`fixed grid place-content-center inset-0 top-0 left-0 md:w-3/5 pointer-events-none ${$$props.class}`}
 >
   <div
     bind:this={dragElement}
@@ -60,7 +60,7 @@
     class="cursor-move pointer-events-auto"
     style={`transform: translateX(${offsetX}px) translateY(${offsetY}px);`}
   >
-    <div class:scale-90={holdInterval} class="transition-transform">
+    <div class:scale-95={holdInterval} class="transition-transform">
       <div
         class:shadow-sm={holdInterval}
         id="main-modal"
