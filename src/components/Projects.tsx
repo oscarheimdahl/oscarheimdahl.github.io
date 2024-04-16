@@ -17,7 +17,7 @@ export function Project1() {
   return (
     <Window>
       <div className='flex flex-col gap-4 pt-2'>
-        <LinkButton href='https://chat.deno.dev'>Chat</LinkButton>
+        <LinkButton href='https://heimchat.deno.dev'>Chat</LinkButton>
         <p className='max-w-52'>
           I wanted to try out WebSockets, so I made a chat app with some extra
           live features.
