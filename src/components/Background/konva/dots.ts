@@ -20,7 +20,7 @@ export function moveDots() {
   dots.forEach((dot, i) => {
     const dist = new Victor(mouseX, mouseY).subtract(dot.location).length();
     const mappedScale = map(dist, 0, radius, maxScale, 1);
-    const scale = dot.randomColor ? Math.max(mappedScale, 1) : 1;
+    const scale = 1; //dot.randomColor ? Math.max(mappedScale, 1) : 1;
 
     if (!mobile) {
       dot.render.scale({ x: scale, y: scale });
@@ -114,6 +114,7 @@ function buildDot({
 }
 
 function getRandomColor() {
+  return '#cccccc';
   const rand = Math.random();
   if (rand > 0.75) return '#CF2C4F';
   if (rand > 0.5) return '#0E98E9';

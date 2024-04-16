@@ -1,5 +1,4 @@
 import Konva from 'Konva';
-import type { Layer } from 'Konva/lib/Layer';
 import type { Stage } from 'Konva/lib/Stage';
 import type { Shape } from 'Konva/lib/Shape';
 import { moveDots, buildDots } from './dots';
