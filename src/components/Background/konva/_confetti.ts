@@ -1,6 +1,5 @@
 import Konva from 'Konva';
 
-import type { Circle } from 'Konva/lib/shapes/Circle';
 import type { Rect } from 'Konva/lib/shapes/Rect';
 import Victor from 'victor';
 import { inViewport, layer } from './stage';
@@ -49,10 +48,10 @@ export function explode({
 }
 
 export function moveConfetti() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  const nextCircles = [];
-  confettis.forEach((confetti, i) => {
+  // const width = window.innerWidth;
+  // const height = window.innerHeight;
+  const nextCircles: Confetti[] = [];
+  confettis.forEach((confetti) => {
     confetti.acceleration = new Victor(0, 0.4); //targetVec;
 
     confetti.velocity.add(confetti.acceleration);

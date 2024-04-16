@@ -40,6 +40,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18.2.22
     version: 18.2.25
+  '@types/victor':
+    specifier: ^1.1.5
+    version: 1.1.5
   '@typescript-eslint/eslint-plugin':
     specifier: ^7.2.0
     version: 7.7.0(@typescript-eslint/parser@7.7.0)(eslint@8.57.0)(typescript@5.4.5)
@@ -832,6 +835,10 @@ packages:
 
   /@types/semver@7.5.8:
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
+    dev: true
+
+  /@types/victor@1.1.5:
+    resolution: {integrity: sha512-MKEWmrBbUdh9STOjJe5Yk2vZAkQSBaa9Tt0FRU5yiiGF+P6Yi+qmCMzpJjJDbqk1a9Wg9VMb0XzcECVr5FPSSA==}
     dev: true
 
   /@typescript-eslint/eslint-plugin@7.7.0(@typescript-eslint/parser@7.7.0)(eslint@8.57.0)(typescript@5.4.5):

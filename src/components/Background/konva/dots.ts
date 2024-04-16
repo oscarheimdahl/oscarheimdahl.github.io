@@ -1,25 +1,23 @@
 import Konva from 'Konva';
 
-// import type { Rect } from 'Konva/lib/shapes/Circle';
-import type { Rect } from 'Konva/lib/shapes/Rect';
-import Victor from 'victor';
-import { inViewport, layer, map } from './stage';
 import type { Circle } from 'konva/lib/shapes/Circle';
 import { createNoise3D } from 'simplex-noise';
+import Victor from 'victor';
+import { layer, map } from './stage';
 
 let z = 0;
 let mobile = false;
 let dotColor = '#444';
-let maxScale = 8;
+// let maxScale = 8;
 let perlinMovement = 0.002;
 
-const radius = 300;
+// const radius = 300;
 
 export function moveDots() {
-  const nextDots = [];
-  dots.forEach((dot, i) => {
-    const dist = new Victor(mouseX, mouseY).subtract(dot.location).length();
-    const mappedScale = map(dist, 0, radius, maxScale, 1);
+  const nextDots: Confetti[] = [];
+  dots.forEach((dot) => {
+    // const dist = new Victor(mouseX, mouseY).subtract(dot.location).length();
+    // const mappedScale = map(dist, 0, radius, maxScale, 1);
     const scale = 1; //dot.randomColor ? Math.max(mappedScale, 1) : 1;
 
     if (!mobile) {
@@ -134,9 +132,9 @@ type Confetti = {
 
 const noise3D = createNoise3D();
 let dots: Confetti[] = []; // buildCircles();
-let mouseX = window.innerWidth / 2;
-let mouseY = window.innerHeight / 2;
-document.addEventListener('mousemove', (e) => {
-  mouseX = e.x;
-  mouseY = e.y;
-});
+// let mouseX = window.innerWidth / 2;
+// let mouseY = window.innerHeight / 2;
+// document.addEventListener('mousemove', (e) => {
+//   mouseX = e.x;
+//   mouseY = e.y;
+// });
