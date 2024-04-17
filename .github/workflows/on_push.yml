@@ -23,9 +23,15 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm build
 
-      - name: Commit built artifacts
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
+      # - name: Commit built artifacts
+      #   run: |
+      #     git config --local user.email "actions@github.com"
+      #     git config --local user.name "GitHub Actions"
 
-          pnpm git-deploy
+      #     pnpm git-deploy
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
