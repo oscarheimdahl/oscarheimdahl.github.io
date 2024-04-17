@@ -5,10 +5,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        dark1: '#121212',
-        dark2: '#2D2D2D',
-        light1: '#D9D9D9',
-        light2: '#FDFDF1',
+        dark: '#282828',
+        light: '#fffbeb',
       },
     },
   },

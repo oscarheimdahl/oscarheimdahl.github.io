@@ -39,7 +39,7 @@ export const ForFun = () => {
       <Window>
         <motion.button
           onClick={handleClick}
-          className={`flex gap-2 shadow-md p-2 rounded-md font-bold text-light1
+          className={`flex gap-2 shadow-md p-2 rounded-md font-bold text-light
           ${countDownStarted ? 'animate-shake' : ''}
           ${
             boom

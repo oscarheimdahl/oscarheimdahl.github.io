@@ -1,0 +1,31 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build your app
+        run: |
+          pnpm install
+          pnpm build
+
+      - name: Commit built artifacts
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+
+          pnpm git-deploy

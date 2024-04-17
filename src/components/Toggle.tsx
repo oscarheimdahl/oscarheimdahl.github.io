@@ -8,16 +8,16 @@ export function Toggle() {
 
   function handleClick() {
     setDarkMode(!darkMode);
-    const darkmode = document.documentElement.classList.contains('dark');
-    if (darkmode) {
-      document.documentElement.classList.remove('dark');
-      // localStorage.setItem('color-theme', 'light');
-      // lightModeStore.set(true);
-    } else {
-      // localStorage.setItem('color-theme', 'dark');
-      document.documentElement.classList.add('dark');
-      // lightModeStore.set(false);
-    }
+    // const darkmode = document.documentElement.classList.contains('dark');
+    // if (darkmode) {
+    //   document.documentElement.classList.remove('dark');
+    //   // localStorage.setItem('color-theme', 'light');
+    //   // lightModeStore.set(true);
+    // } else {
+    //   // localStorage.setItem('color-theme', 'dark');
+    //   document.documentElement.classList.add('dark');
+    //   // lightModeStore.set(false);
+    // }
   }
 
   return (
@@ -25,10 +25,10 @@ export function Toggle() {
       <div className='flex gap-2'>
         <button
           onClick={handleClick}
-          className='w-14 h-8 bg-dark2 rounded-full shadow-md dark:bg-light2'
+          className='w-14 h-8 bg-dark rounded-full shadow-md dark:bg-light'
         >
           <div
-            className={`w-6 h-6 bg-light2 rounded-full mx-1 transition-transform dark:bg-dark2 ${
+            className={`w-6 h-6 bg-light rounded-full mx-1 transition-transform dark:bg-dark ${
               darkMode ? 'translate-x-6' : ''
             }`}
           />

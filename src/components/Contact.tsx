@@ -9,19 +9,19 @@ export function Contact() {
           className='shadow-md ring-2 rounded-md p-1 bg-current ring-current transition-opacity hover:opacity-65'
           href='https://www.linkedin.com/in/oscar-heimdahl-9b9428152/'
         >
-          <Linkedin className='stroke-light2 dark:stroke-dark2 transition-colors' />
+          <Linkedin className='stroke-light dark:stroke-dark transition-colors' />
         </a>
         <a
           className='shadow-md ring-2 rounded-md p-1 bg-current ring-current transition-opacity hover:opacity-65'
           href='https://www.github.com/oscarheimdahl'
         >
-          <Github className='stroke-light2 dark:stroke-dark2 transition-colors' />
+          <Github className='stroke-light dark:stroke-dark transition-colors' />
         </a>
         <a
           className='shadow-md ring-2 rounded-md p-1 bg-current ring-current transition-opacity hover:opacity-65'
           href='mailto:o.heimdahl@gmail.com'
         >
-          <Mail className='stroke-light2 dark:stroke-dark2 transition-colors' />
+          <Mail className='stroke-light dark:stroke-dark transition-colors' />
         </a>
       </div>
     </Window>

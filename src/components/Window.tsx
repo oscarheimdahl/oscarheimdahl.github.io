@@ -41,7 +41,7 @@ export function Window({ children }: WindowProps) {
         <Boom>
           <div
             className={`pt-12 p-4 size-fit rounded-lg shadow-lg shadow-[#000000aa] relative cursor-move transition-colors rotate-0
-        bg-light2 dark:bg-[rgb(25,25,25)]`}
+        bg-light dark:bg-neutral-950`}
           >
             <DragIndicator />
             {children}

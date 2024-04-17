@@ -8,23 +8,23 @@ export function ProjectsTitle() {
         <div
           style={{ gridArea: '1 / 1' }}
           className={`opacity-100 dark:opacity-0 grid place-content-center rounded-lg transition-opacity duration-300
-        bg-gradient-to-tl from-dark1 to-slate-800
+        bg-gradient-to-br  from-slate-800 to-dark
         `}
         >
-          <h1 className='m-1 text-lg px-4 py-2 transition-colors   text-light2 rounded-md shadow-inner w-56'>
+          <h1 className='m-1 text-lg px-4 py-2 transition-colors   text-light rounded-md shadow-inner w-56'>
             Check out some of the stuff I've made!
           </h1>
         </div>
-        <div
+        {/* <div
           style={{ gridArea: '1 / 1' }}
           className={`opacity-0 dark:opacity-100 grid place-content-center rounded-lg transition-opacity duration-300
-            bg-gradient-to-tl from-blue-600 to-green-700
+            bg-gradient-to-br from-light to-orange-100 
         `}
         >
-          <h1 className='m-1 text-lg px-4 py-2 transition-colors   text-light2 rounded-md shadow-inner w-56'>
+          <h1 className='m-1 text-lg px-4 py-2 transition-colors text-dark rounded-md shadow-inner w-56'>
             Check out some of the stuff I've made!
           </h1>
-        </div>
+        </div> */}
       </div>
     </Window>
   );
