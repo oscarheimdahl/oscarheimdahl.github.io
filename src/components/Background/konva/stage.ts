@@ -1,6 +1,6 @@
-import Konva from 'Konva';
-import type { Stage } from 'Konva/lib/Stage';
-import type { Shape } from 'Konva/lib/Shape';
+import Konva from 'konva';
+import type { Stage } from 'konva/lib/Stage';
+import type { Shape } from 'konva/lib/Shape';
 import { moveDots, buildDots } from './dots';
 
 let stage: Stage;

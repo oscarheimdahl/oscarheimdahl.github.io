@@ -1,4 +1,4 @@
-import Konva from 'Konva';
+import Konva from 'konva';
 
 import type { Circle } from 'konva/lib/shapes/Circle';
 import { createNoise3D } from 'simplex-noise';
