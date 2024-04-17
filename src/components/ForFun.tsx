@@ -44,7 +44,7 @@ export const ForFun = () => {
           ${
             boom
               ? 'bg-gradient-to-br from-green-600 to-green-800'
-              : 'bg-gradient-to-br from-red-600 to-red-800'
+              : 'bg-gradient-to-br from-rose-600 to-rose-800'
           }
       `}
         >
