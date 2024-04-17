@@ -21,6 +21,8 @@ jobs:
       - name: Build your app
         run: |
           pnpm install --frozen-lockfile
+          node -v
+          pnpm -v
           pnpm build
 
       - name: Deploy
