@@ -15,11 +15,11 @@ export const ForFun = () => {
   const nextBoom = warningIndex === warnings.length - 1;
 
   const countDown = () => {
-    setWarningIndex((prev) => (prev + 1) % warnings.length);
     if (nextBoom) {
       setBoom(true);
       setCountDownStarted(false);
     }
+    setWarningIndex((prev) => (prev + 1) % warnings.length);
   };
 
   useInterval(countDown, countDownStarted ? 1000 : null);
