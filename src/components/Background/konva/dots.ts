@@ -14,7 +14,7 @@ let perlinMovement = 0.002;
 // const radius = 300;
 
 export function moveDots() {
-  const nextDots: Confetti[] = [];
+  const nextDots: Dot[] = [];
   dots.forEach((dot) => {
     // const dist = new Victor(mouseX, mouseY).subtract(dot.location).length();
     // const mappedScale = map(dist, 0, radius, maxScale, 1);
@@ -120,7 +120,7 @@ function getRandomColor() {
   return `#3AB895`;
 }
 
-type Confetti = {
+type Dot = {
   render: Circle;
   location: Victor;
   velocity: Victor;
@@ -131,7 +131,7 @@ type Confetti = {
 };
 
 const noise3D = createNoise3D();
-let dots: Confetti[] = []; // buildCircles();
+let dots: Dot[] = []; // buildCircles();
 // let mouseX = window.innerWidth / 2;
 // let mouseY = window.innerHeight / 2;
 // document.addEventListener('mousemove', (e) => {

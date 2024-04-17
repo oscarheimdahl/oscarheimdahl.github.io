@@ -1,11 +1,13 @@
 import { Window } from '@/components/Window';
-import { useState } from 'react';
+import { useAppState } from '@/store';
 
 export function Toggle() {
-  const [on, setOn] = useState(false);
+  // const [on, setOn] = useState(false);
+  const darkMode = useAppState((state) => state.darkMode);
+  const setDarkMode = useAppState((state) => state.setDarkMode);
 
   function handleClick() {
-    setOn(!on);
+    setDarkMode(!darkMode);
     const darkmode = document.documentElement.classList.contains('dark');
     if (darkmode) {
       document.documentElement.classList.remove('dark');
@@ -27,7 +29,7 @@ export function Toggle() {
         >
           <div
             className={`w-6 h-6 bg-light2 rounded-full mx-1 transition-transform dark:bg-dark2 ${
-              on ? 'translate-x-6' : ''
+              darkMode ? 'translate-x-6' : ''
             }`}
           />
         </button>

@@ -1,13 +1,12 @@
 import { motion } from 'framer-motion';
 import { useAppState } from '@/store';
-import { useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 interface WindowProps {
   children: React.ReactNode;
-  className?: string;
 }
 
-export function Window({ children, className }: WindowProps) {
+export function Window({ children }: WindowProps) {
   const backgroundRef = useAppState((state) => state.backgroundRef);
   const newWindowZ = useAppState((state) => state.newWindowZ);
   const windowZ = useAppState((state) => state.windowZ);
@@ -17,7 +16,6 @@ export function Window({ children, className }: WindowProps) {
 
   return (
     <motion.div
-      className={className}
       initial={{ scale: 0.7 }}
       animate={{ scale: 1 }}
       transition={{
@@ -31,19 +29,48 @@ export function Window({ children, className }: WindowProps) {
           setZ(windowZ + 1);
         }}
         drag
-        whileDrag={{ rotate: '2deg', zIndex: 1000 }}
+        whileDrag={{ rotate: '3deg', zIndex: 1000 }}
         whileTap={{ scale: 0.98 }}
-        animate={{ scale: 1 }}
+        animate={{
+          scale: 1,
+        }}
         dragMomentum={false}
         dragConstraints={backgroundRef}
         id='main-modal'
-        className={`pt-10 p-4 size-fit rounded-lg shadow-lg shadow-[#000000aa] relative cursor-move transition-colors rotate-0
-                  bg-light2 dark:bg-[rgb(25,25,25)]
-                    ${className}`}
       >
-        <DragIndicator />
-        {children}
+        <Boom>
+          <div
+            className={`pt-12 p-4 size-fit rounded-lg shadow-lg shadow-[#000000aa] relative cursor-move transition-colors rotate-0
+        bg-light2 dark:bg-[rgb(25,25,25)]`}
+          >
+            <DragIndicator />
+            {children}
+          </div>
+        </Boom>
       </motion.div>
+    </motion.div>
+  );
+}
+
+function Boom({ children }: { children: ReactNode }) {
+  const boom = useAppState((state) => state.boom);
+  const [random, setRandom] = useState(0);
+
+  useEffect(() => {
+    if (boom && !random) setRandom(Math.random());
+    if (!boom && random) setRandom(0);
+  }, [boom]);
+
+  return (
+    <motion.div
+      animate={{
+        rotate: boom ? random * 360 : 0,
+        scale: boom ? 1.5 : 1,
+        translateX: boom ? (random - 0.5) * 50 : 0,
+        translateY: boom ? (random - 0.5) * 50 : 0,
+      }}
+    >
+      {children}
     </motion.div>
   );
 }
