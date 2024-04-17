@@ -21,9 +21,6 @@ jobs:
       - name: Build your app
         run: |
           pnpm install --frozen-lockfile
-          ls
-          node -v
-          pnpm -v
           pnpm build
 
       - name: Commit built artifacts
@@ -31,4 +28,5 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
 
+          git push origin --delete gh-pages || true
           pnpm git-deploy
