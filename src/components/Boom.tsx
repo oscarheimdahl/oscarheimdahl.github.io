@@ -10,7 +10,7 @@ export const ForFun = () => {
   const setBoom = useAppState((state) => state.setBoom);
   const [countDownStarted, setCountDownStarted] = useState(false);
   const [warningIndex, setWarningIndex] = useState(0);
-  const warnings = ['', '5', '4', '3', '2', '1'];
+  const warnings = ['2', '5', '4', '3', '2', '1'];
 
   const nextBoom = warningIndex === warnings.length - 1;
 
@@ -39,16 +39,22 @@ export const ForFun = () => {
       <Window>
         <motion.button
           onClick={handleClick}
-          className={`flex gap-2 shadow-md p-2 rounded-md font-bold text-light
+          className={`flex gap-1 overflow-hidden shadow-md p-2 rounded-md font-bold text-light
           ${countDownStarted ? 'animate-shake' : ''}
           ${
             boom
               ? 'bg-gradient-to-br from-green-600 to-green-800'
-              : 'bg-gradient-to-br from-blue-600 to-green-800'
+              : 'bg-gradient-to-br from-red-700 to-red-900'
           }
       `}
         >
-          <span className='w-3'>{warnings[warningIndex]}</span>
+          <div
+            className={`${
+              countDownStarted ? '' : 'translate-y-10'
+            } w-3 h-full transition-transform`}
+          >
+            {warnings[warningIndex]}
+          </div>
           {boom && <RotateCcw />}
           {!boom && <Bomb />}
         </motion.button>

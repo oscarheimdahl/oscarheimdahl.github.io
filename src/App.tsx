@@ -3,7 +3,7 @@ import { Profile } from '@/components/Profile/Profile';
 import { Toggle } from '@/components/Toggle';
 import { Project1, Project2, ProjectsTitle } from '@/components/Projects';
 import { Contact } from './components/Contact';
-import { ForFun } from './components/ForFun';
+import { ForFun } from './components/Boom';
 
 function App() {
   return (
