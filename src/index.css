@@ -34,14 +34,39 @@ body {
   }
 }
 
-.animate-shake {
-  animation: shake;
+.animate-shake-1 {
+  animation: shake-1;
   animation-duration: 200ms;
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
 }
 
-@keyframes shake {
+@keyframes shake-1 {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(1deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-1deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-shake-2 {
+  animation: shake-2;
+  animation-duration: 200ms;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake-2 {
   0% {
     transform: translate(0, 0) rotate(0deg);
   }
@@ -49,12 +74,36 @@ body {
     transform: translate(1px, 1px) rotate(2deg);
   }
   50% {
-    transform: translate(0, 0) rotate(0eg);
+    transform: translate(0, 0) rotate(0deg);
   }
   75% {
     transform: translate(-1px, 1px) rotate(-2deg);
   }
   100% {
     transform: translate(0, 0) rotate(0deg);
+  }
+}
+.animate-shake-3 {
+  animation: shake-3;
+  animation-duration: 200ms;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake-3 {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(0.9);
+  }
+  25% {
+    transform: translate(1px, 1px) rotate(2deg) scale(0.9);
+  }
+  50% {
+    transform: translate(0, 0) rotate(0deg) scale(0.9);
+  }
+  75% {
+    transform: translate(-1px, 1px) rotate(-2deg) scale(0.9);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(0.9);
   }
 }
