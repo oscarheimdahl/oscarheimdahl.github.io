@@ -20,7 +20,7 @@ jobs:
 
       - name: Build your app
         run: |
-          pnpm install
+          pnpm install --frozen-lockfile
           pnpm build
 
       - name: Commit built artifacts
