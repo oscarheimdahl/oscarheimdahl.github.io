@@ -22,6 +22,8 @@ jobs:
         run: |
           pnpm install --frozen-lockfile
           ls
+          node -v
+          pnpm -v
           pnpm build
 
       - name: Commit built artifacts
