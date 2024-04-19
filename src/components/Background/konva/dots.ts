@@ -11,24 +11,12 @@ let dotColor = '#444';
 // let maxScale = 8;
 let perlinMovement = 0.002;
 
-// const radius = 300;
-let boomOffsetX = 0;
-let boomOffsetY = 0;
-let boomScale = 0;
-export function boom() {
-  dots.map((dot) => dot.render.opacity(0));
-}
-
-export function resetBoom() {
-  dots.map((dot) => dot.render.opacity(1));
-}
-
 export function moveDots() {
   const nextDots: Dot[] = [];
   dots.forEach((dot) => {
     // const dist = new Victor(mouseX, mouseY).subtract(dot.location).length();
     // const mappedScale = map(dist, 0, radius, maxScale, 1);
-    const scale = 1 + boomScale; //dot.randomColor ? Math.max(mappedScale, 1) : 1;
+    const scale = 1; //dot.randomColor ? Math.max(mappedScale, 1) : 1;
 
     if (!mobile) {
       dot.render.scale({ x: scale, y: scale });
@@ -46,8 +34,8 @@ export function moveDots() {
     );
     const mappedOffsetX = map(offsetXNoise, -1, 1, 0, 20);
     const mappedOffsetY = map(offsetYNoise, -1, 1, 0, 20);
-    const offsetX = mappedOffsetX + boomOffsetX;
-    const offsetY = mappedOffsetY + boomOffsetY;
+    const offsetX = mappedOffsetX;
+    const offsetY = mappedOffsetY;
     dot.render.offsetX(offsetX / scale);
     dot.render.offsetY(offsetY / scale);
     nextDots.push(dot);

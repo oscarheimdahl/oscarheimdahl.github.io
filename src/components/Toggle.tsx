@@ -25,7 +25,7 @@ export function Toggle() {
       <div className='flex gap-2'>
         <button
           onClick={handleClick}
-          className='w-14 h-8 bg-dark rounded-full shadow-md dark:bg-light'
+          className='w-14 h-8 bg-gradient-to-br from-dark via-dark to-red-800 rounded-full shadow-md dark:bg-light'
         >
           <div
             className={`w-6 h-6 bg-light rounded-full mx-1 transition-transform dark:bg-dark ${

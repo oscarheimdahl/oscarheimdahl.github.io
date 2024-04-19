@@ -17,23 +17,6 @@ body {
   @apply bg-neutral-950 dark:bg-neutral-800 text-dark dark:text-light  transition-colors;
 }
 
-.fade-in {
-  animation: fade-in;
-  animation-duration: 900ms;
-  animation-delay: 500ms;
-  animation-fill-mode: forwards;
-  animation-iteration-count: 1;
-}
-
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 .animate-shake-1 {
   animation: shake-1;
   animation-duration: 200ms;
@@ -92,19 +75,19 @@ body {
 
 @keyframes shake-3 {
   0% {
-    transform: translate(0, 0) rotate(0deg) scale(0.9);
+    transform: translate(0, 0) rotate(0deg);
   }
   25% {
-    transform: translate(1px, 1px) rotate(2deg) scale(0.9);
+    transform: translate(1px, 1px) rotate(2deg);
   }
   50% {
-    transform: translate(0, 0) rotate(0deg) scale(0.9);
+    transform: translate(0, 0) rotate(0deg);
   }
   75% {
-    transform: translate(-1px, 1px) rotate(-2deg) scale(0.9);
+    transform: translate(-1px, 1px) rotate(-2deg);
   }
   100% {
-    transform: translate(0, 0) rotate(0deg) scale(0.9);
+    transform: translate(0, 0) rotate(0deg);
   }
 }
 
