@@ -1,12 +1,24 @@
 import Konva from 'konva';
 import type { Stage } from 'konva/lib/Stage';
 import type { Shape } from 'konva/lib/Shape';
-import { moveDots, buildDots } from './dots';
+import { asciiLayer } from './ascii';
+import { dotLayer } from './dots';
+
+export type StageLayer = {
+  build: (width: number, height: number) => Konva.Layer;
+  update: () => void;
+};
 
 let stage: Stage;
-export let layer = new Konva.Layer();
-
 let rendering = false;
+
+let layerIndex = 0;
+const layers = [dotLayer, asciiLayer];
+
+export function nextBackground() {
+  layerIndex = (layerIndex + 1) % layers.length;
+  buildBackground();
+}
 
 export function init() {
   stage = new Konva.Stage({
@@ -15,13 +27,14 @@ export function init() {
 }
 
 export function buildBackground() {
-  stage.width(window.innerWidth);
-  stage.height(window.innerHeight);
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  stage.width(width);
+  stage.height(height);
 
   stage.removeChildren();
-  layer = new Konva.Layer();
-  stage.add(layer);
-  buildDots();
+  const builtLayer = layers[layerIndex].build(width, height);
+  stage.add(builtLayer);
 
   if (!rendering) {
     move();
@@ -37,7 +50,7 @@ export function setPause(_pause: boolean) {
 
 function move() {
   if (pause) return;
-  moveDots();
+  layers[layerIndex].update();
   requestAnimationFrame(move);
 }
 

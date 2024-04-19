@@ -7,7 +7,44 @@ export function Background() {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const setBackgroundRef = useAppState((state) => state.setBackgroundRef);
   const boom = useAppState((state) => state.boom);
+  // const [hide, setHide] = useState(false);
+  const hide = false;
 
+  //   <button
+  //   onClick={() => {
+  //     setHide(true);
+  //     setTimeout(() => {
+  //       nextBackground();
+  //       setHide(false);
+  //     }, 200);
+  //   }}
+  // >
+  //   Next
+  // </button>
+
+  useEffect(() => {
+    setBackgroundRef(backgroundRef);
+  }, [setBackgroundRef]);
+
+  return (
+    <motion.div
+      ref={backgroundRef}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1 }}
+      className='absolute w-full h-full'
+    >
+      <motion.div
+        animate={{ opacity: boom || hide ? 0 : 1 }}
+        className='absolute w-full h-full'
+      >
+        <DotsBackground />
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function DotsBackground() {
   useEffect(() => {
     init();
     buildBackground();
@@ -22,27 +59,5 @@ export function Background() {
       }, 100);
     });
   }, []);
-
-  useEffect(() => {
-    setBackgroundRef(backgroundRef);
-  }, [setBackgroundRef]);
-
-  return (
-    <motion.div
-      ref={backgroundRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{
-        delay: 1,
-      }}
-      className='absolute w-full h-full'
-    >
-      <motion.div
-        animate={{ opacity: boom ? 0 : 1 }}
-        className='absolute w-full h-full'
-      >
-        <div id='container'></div>
-      </motion.div>
-    </motion.div>
-  );
+  return <div id='container'></div>;
 }

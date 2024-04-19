@@ -6,6 +6,11 @@ import { Contact } from './components/Contact';
 import { ForFun } from './components/Boom';
 
 function App() {
+  // return (
+  //   <>
+  //     <Background />
+  //   </>
+  // );
   return (
     <>
       <Background />
@@ -15,11 +20,11 @@ function App() {
         }}
         className='window-grid w-full h-full grid items-center justify-center gap-4 place-content-center overflow-y-scroll'
       >
-        <div className='self-end pt-32' style={{ gridArea: 'a' }}>
+        <div className='self-end pt-24 sm:pt-32' style={{ gridArea: 'a' }}>
           <Profile />
         </div>
         <div
-          className='hidden sm:flex self-start flex-col gap-4 pt-32'
+          className='hidden sm:flex self-start flex-col gap-4 pt-24 sm:pt-32'
           style={{ gridArea: 'b' }}
         >
           <ProjectsTitle />
