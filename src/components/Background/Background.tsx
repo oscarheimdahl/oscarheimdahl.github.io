@@ -1,10 +1,20 @@
 import { useEffect, useRef } from 'react';
 import { buildBackground, init } from './konva/stage';
 import { useAppState } from '@/store';
+import { boom as dotBoom, resetBoom } from './konva/dots';
 
 export function Background() {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const setBackgroundRef = useAppState((state) => state.setBackgroundRef);
+  const boom = useAppState((state) => state.boom);
+
+  useEffect(() => {
+    if (boom) {
+      dotBoom();
+    } else {
+      resetBoom();
+    }
+  }, [boom]);
 
   useEffect(() => {
     init();
@@ -19,7 +29,7 @@ export function Background() {
         timeout = undefined;
       }, 100);
     });
-  });
+  }, []);
 
   useEffect(() => {
     setBackgroundRef(backgroundRef);

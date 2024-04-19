@@ -13,13 +13,13 @@ function App() {
         style={{
           gridTemplateRows: 'min-content min-content min-content',
         }}
-        className='window-grid w-full h-full grid items-center justify-center gap-4 place-content-center'
+        className='window-grid w-full h-full grid items-center justify-center gap-4 place-content-center overflow-y-scroll'
       >
-        <div className='self-end' style={{ gridArea: 'a' }}>
+        <div className='self-end pt-32' style={{ gridArea: 'a' }}>
           <Profile />
         </div>
         <div
-          className='hidden sm:flex self-start flex-col gap-4'
+          className='hidden sm:flex self-start flex-col gap-4 pt-32'
           style={{ gridArea: 'b' }}
         >
           <ProjectsTitle />
