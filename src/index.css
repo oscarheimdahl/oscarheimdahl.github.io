@@ -107,3 +107,23 @@ body {
     transform: translate(0, 0) rotate(0deg) scale(0.9);
   }
 }
+
+@media (min-width: 640px) {
+  .window-grid {
+    grid-template-areas:
+      'a a a a b b'
+      'a a a a b b'
+      'c c c c b b'
+      'd d d d . .';
+  }
+}
+@media (max-width: 640px) {
+  .window-grid {
+    grid-template-areas:
+      'a'
+      'a'
+      'a'
+      'c'
+      'd';
+  }
+}

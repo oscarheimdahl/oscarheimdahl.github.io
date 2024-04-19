@@ -16,37 +16,45 @@ export function Window({ children }: WindowProps) {
 
   return (
     <motion.div
-      initial={{ scale: 0.7 }}
+      initial={{ scale: 0.4 }}
       animate={{ scale: 1 }}
       transition={{
-        delay: 0.5,
+        delay: 1,
       }}
     >
       <motion.div
-        style={{ zIndex: z }}
-        onMouseDown={() => {
-          newWindowZ();
-          setZ(windowZ + 1);
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          delay: 0.5,
         }}
-        drag
-        whileDrag={{ rotate: '3deg', zIndex: 1000 }}
-        whileTap={{ scale: 0.98 }}
-        animate={{
-          scale: 1,
-        }}
-        dragMomentum={false}
-        dragConstraints={backgroundRef}
-        id='main-modal'
       >
-        <Boom>
-          <div
-            className={`pt-12 p-4 size-fit rounded-lg shadow-lg shadow-[#000000aa] relative cursor-move transition-colors rotate-0
+        <motion.div
+          style={{ zIndex: z }}
+          onMouseDown={() => {
+            newWindowZ();
+            setZ(windowZ + 1);
+          }}
+          drag
+          whileDrag={{ rotate: '3deg', zIndex: 1000 }}
+          whileTap={{ scale: 0.98 }}
+          animate={{
+            scale: 1,
+          }}
+          dragMomentum={false}
+          dragConstraints={backgroundRef}
+          id='main-modal'
+        >
+          <Boom>
+            <div
+              className={`pt-12 p-4 size-fit rounded-lg shadow-lg shadow-[#000000aa] relative cursor-move transition-colors rotate-0
         bg-light dark:bg-neutral-950`}
-          >
-            <DragIndicator />
-            {children}
-          </div>
-        </Boom>
+            >
+              <DragIndicator />
+              {children}
+            </div>
+          </Boom>
+        </motion.div>
       </motion.div>
     </motion.div>
   );

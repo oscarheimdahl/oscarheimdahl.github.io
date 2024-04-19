@@ -11,14 +11,9 @@ function App() {
       <Background />
       <div
         style={{
-          gridTemplateAreas: `
-          "a a a a b b"
-          "a a a a b b"
-          "c c c c b b"
-          "d d d d . ."`,
           gridTemplateRows: 'min-content min-content min-content',
         }}
-        className='w-full h-full grid items-center justify-center gap-4 place-content-center'
+        className='window-grid w-full h-full grid items-center justify-center gap-4 place-content-center'
       >
         <div className='self-end' style={{ gridArea: 'a' }}>
           <Profile />
