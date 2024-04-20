@@ -56,7 +56,6 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
         x: x * (dim + gap) + xOffset + extraOffsetX,
         y: newY,
         velocity: new Victor(0, 0),
-        ix: x / cols,
         iy: y / rows,
       });
       layer.add(builtDot.render);
@@ -100,7 +99,6 @@ interface BuildDotArgs {
   w: number;
   velocity?: Victor;
   location?: Victor;
-  ix?: number;
   iy?: number;
 }
 
@@ -110,29 +108,8 @@ function buildDot({
   w,
   velocity = new Victor(0, 0),
   location = new Victor(x, y),
-  ix,
   iy,
 }: BuildDotArgs) {
-  const colors = [
-    // '#dc2626',
-    // '#ea580c',
-    // '#d97706',
-    // '#ca8a04',
-    // '#65a30d',
-    // '#16a34a',
-    // '#059669',
-    // '#0d9488',
-    // '#0891b2',
-    // '#0284c7',
-    // '#2563eb',
-    // '#4f46e5',
-    // '#7c3aed',
-    // '#9333ea',
-    // '#c026d3',
-    // '#db2777',
-    '#222',
-  ];
-
   const scale = map(Math.abs(iy! - 0.5), 0, 0.5, 1.5, 0.2);
   const rect = new Konva.Rect({
     x,
