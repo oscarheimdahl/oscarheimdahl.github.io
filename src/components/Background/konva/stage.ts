@@ -3,6 +3,8 @@ import type { Stage } from 'konva/lib/Stage';
 import type { Shape } from 'konva/lib/Shape';
 import { asciiLayer } from './ascii';
 import { dotLayer } from './dots';
+import { diamondLayer } from './diamond';
+import { smallLayer } from './small';
 
 export type StageLayer = {
   build: (width: number, height: number) => Konva.Layer;
@@ -13,10 +15,17 @@ let stage: Stage;
 let rendering = false;
 
 let layerIndex = 0;
-const layers = [dotLayer, asciiLayer];
+const layers = [dotLayer, asciiLayer, diamondLayer, smallLayer];
 
 export function nextBackground() {
-  layerIndex = (layerIndex + 1) % layers.length;
+  layerIndex = layerIndex + 1;
+  if (layerIndex >= layers.length) layerIndex = 0;
+  buildBackground();
+}
+
+export function prevBackground() {
+  layerIndex = layerIndex - 1;
+  if (layerIndex < 0) layerIndex = layers.length - 1;
   buildBackground();
 }
 

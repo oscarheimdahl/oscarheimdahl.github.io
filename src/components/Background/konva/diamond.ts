@@ -1,12 +1,12 @@
 import Konva from 'konva';
 
-import type { Circle } from 'konva/lib/shapes/Circle';
+import type { Rect } from 'konva/lib/shapes/Rect';
 import { createNoise3D } from 'simplex-noise';
 import Victor from 'victor';
-import { StageLayer } from './stage';
+import { StageLayer, map } from './stage';
 
 type Dot = {
-  render: Circle;
+  render: Rect;
   location: Victor;
   velocity: Victor;
   acceleration: Victor;
@@ -19,9 +19,9 @@ let layer: Konva.Layer;
 
 const noise3D = createNoise3D(() => 1);
 let z = 0.1;
-let perlinMovement = 0.0001;
+let perlinMovement = 0.001;
 
-export const asciiLayer: StageLayer = {
+export const diamondLayer: StageLayer = {
   build: buildSymbols,
   update: updateSymbols,
 };
@@ -35,7 +35,7 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
   const extraOffsetX = (stageWidth - width) / 2;
   const extraOffsetY = (stageHeight - height) / 2;
 
-  const dim = 1;
+  const dim = 10;
   const gap = 50;
   const cols = Math.floor(width / (dim + gap));
   const rows = Math.floor(height / (dim + gap));
@@ -44,11 +44,20 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
 
   for (let x = 0; x <= cols; x++) {
     for (let y = 0; y <= rows; y++) {
+      if (Math.random() > 0.4) continue;
+      let newY = y * (dim + gap) + yOffset + extraOffsetY;
+      if (x % 2 === 0) {
+        if (y === rows) continue;
+        newY += (dim + gap) / 2;
+      }
+
       const builtDot = buildDot({
-        w: dim * 2,
+        w: dim,
         x: x * (dim + gap) + xOffset + extraOffsetX,
-        y: y * (dim + gap) + yOffset + extraOffsetY,
+        y: newY,
         velocity: new Victor(0, 0),
+        ix: x / cols,
+        iy: y / rows,
       });
       layer.add(builtDot.render);
       symbols.push(builtDot);
@@ -61,18 +70,23 @@ export function updateSymbols() {
   const nextSymbols: Dot[] = [];
 
   symbols.forEach((symbol) => {
-    const noiseAmp = 1000;
+    const noiseAmp = 100;
     const noise = noise3D(
       symbol.location.x / noiseAmp,
-      symbol.location.y / noiseAmp,
+      // symbol.location.y / noiseAmp,
+      1,
       z
-    );
+    ); // (-1, 1)
 
-    if (noise > 0.5) symbol.render.fill('#aaa');
-    else symbol.render.fill('#555');
+    const mappedNoise = map(noise, -1, 1, 0, 360);
 
-    if (noise > 0) symbol.render.scale({ x: 5, y: 5 });
-    else symbol.render.scale({ x: 0, y: 0 });
+    symbol.render.rotation(mappedNoise);
+
+    // if (noise > 0.5) symbol.render.opacity(1);
+    // else symbol.render.opacity(1);
+
+    // if (noise > 0) symbol.render.scale({ x: 5, y: 5 });
+    // else symbol.render.scale({ x: 0, y: 0 });
 
     nextSymbols.push(symbol);
   });
@@ -86,6 +100,8 @@ interface BuildDotArgs {
   w: number;
   velocity?: Victor;
   location?: Victor;
+  ix?: number;
+  iy?: number;
 }
 
 function buildDot({
@@ -94,15 +110,43 @@ function buildDot({
   w,
   velocity = new Victor(0, 0),
   location = new Victor(x, y),
+  ix,
+  iy,
 }: BuildDotArgs) {
-  const rect = new Konva.Circle({
+  const colors = [
+    // '#dc2626',
+    // '#ea580c',
+    // '#d97706',
+    // '#ca8a04',
+    // '#65a30d',
+    // '#16a34a',
+    // '#059669',
+    // '#0d9488',
+    // '#0891b2',
+    // '#0284c7',
+    // '#2563eb',
+    // '#4f46e5',
+    // '#7c3aed',
+    // '#9333ea',
+    // '#c026d3',
+    // '#db2777',
+    '#222',
+  ];
+
+  const scale = map(Math.abs(iy! - 0.5), 0, 0.5, 1.5, 0.2);
+  const rect = new Konva.Rect({
     x,
     y,
-    width: w,
-    height: w,
+    width: w * scale,
+    height: w * scale,
     listening: false,
-    fill: '#555',
+    fill: Math.random() > 0.3 ? '#aaa' : '#555',
   });
+
+  rect.offsetX(rect.width() / 2);
+  rect.offsetY(rect.height() / 2);
+  rect.x(rect.x() + rect.width() / 2);
+  rect.y(rect.y() + rect.height() / 2);
 
   return {
     render: rect,

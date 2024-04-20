@@ -4,6 +4,7 @@ import { Toggle } from '@/components/Toggle';
 import { Project1, Project2, ProjectsTitle } from '@/components/Projects';
 import { Contact } from './components/Contact';
 import { ForFun } from './components/Boom';
+import { NextBackground } from './components/NextBackground';
 
 function App() {
   // return (
@@ -44,7 +45,8 @@ function App() {
           <Toggle />
           <Contact />
         </div>
-        <div className='flex justify-end' style={{ gridArea: 'd' }}>
+        <div className='flex justify-end gap-4' style={{ gridArea: 'd' }}>
+          <NextBackground />
           <ForFun />
         </div>
       </div>
