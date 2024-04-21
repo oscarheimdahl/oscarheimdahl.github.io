@@ -35,7 +35,7 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
   const extraOffsetX = (stageWidth - width) / 2;
   const extraOffsetY = (stageHeight - height) / 2;
 
-  const dim = 10;
+  const dim = 15;
   const gap = 50;
   const cols = Math.floor(width / (dim + gap));
   const rows = Math.floor(height / (dim + gap));
@@ -44,7 +44,6 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
 
   for (let x = 0; x <= cols; x++) {
     for (let y = 0; y <= rows; y++) {
-      if (Math.random() > 0.4) continue;
       let newY = y * (dim + gap) + yOffset + extraOffsetY;
       if (x % 2 === 0) {
         if (y === rows) continue;
@@ -66,30 +65,19 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
 }
 
 export function updateSymbols() {
-  const nextSymbols: Dot[] = [];
-
   symbols.forEach((symbol) => {
-    const noiseAmp = 100;
+    const noiseAmp = 1000;
     const noise = noise3D(
       symbol.location.x / noiseAmp,
       // symbol.location.y / noiseAmp,
       1,
       z
-    ); // (-1, 1)
+    );
 
-    const mappedNoise = map(noise, -1, 1, 0, 360);
+    const mappedNoise = map(noise, -1, 1, -100, 100);
 
-    symbol.render.rotation(mappedNoise);
-
-    // if (noise > 0.5) symbol.render.opacity(1);
-    // else symbol.render.opacity(1);
-
-    // if (noise > 0) symbol.render.scale({ x: 5, y: 5 });
-    // else symbol.render.scale({ x: 0, y: 0 });
-
-    nextSymbols.push(symbol);
+    symbol.render.offsetY(mappedNoise + symbol.render.height() / 2);
   });
-  symbols = nextSymbols;
   z += perlinMovement;
 }
 
@@ -111,13 +99,32 @@ function buildDot({
   iy,
 }: BuildDotArgs) {
   const scale = map(Math.abs(iy! - 0.5), 0, 0.5, 1.5, 0.2);
+
+  const colors = [
+    'hsl(0, 85%, 59%)',
+    // 'hsl(25, 95%, 52%)',
+    'hsl(39, 94%, 50%)',
+    // 'hsl(44, 93%, 47%)',
+    // 'hsl(83, 80%, 45%)',
+    // 'hsl(144, 71%, 45%)',
+    // 'hsl(167, 84%, 39%)',
+    // 'hsl(177, 81%, 39%)',
+    // 'hsl(193, 94%, 43%)',
+    'hsl(202, 88%, 48%)',
+    // 'hsl(220, 89%, 61%)',
+    // 'hsl(237, 77%, 63%)',
+    // 'hsl(252, 86%, 65%)',
+    // 'hsl(257, 85%, 64%)',
+  ];
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
   const rect = new Konva.Rect({
     x,
     y,
     width: w * scale,
     height: w * scale,
     listening: false,
-    fill: Math.random() > 0.3 ? '#aaa' : '#555',
+    fill: randomColor,
+    perfectDrawEnabled: false,
   });
 
   rect.offsetX(rect.width() / 2);

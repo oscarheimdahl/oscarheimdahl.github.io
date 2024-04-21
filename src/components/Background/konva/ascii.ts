@@ -58,8 +58,6 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
 }
 
 export function updateSymbols() {
-  const nextSymbols: Dot[] = [];
-
   symbols.forEach((symbol) => {
     const noiseAmp = 1000;
     const noise = noise3D(
@@ -73,10 +71,7 @@ export function updateSymbols() {
 
     if (noise > 0) symbol.render.scale({ x: 5, y: 5 });
     else symbol.render.scale({ x: 0, y: 0 });
-
-    nextSymbols.push(symbol);
   });
-  symbols = nextSymbols;
   z += perlinMovement;
 }
 
@@ -102,6 +97,7 @@ function buildDot({
     height: w,
     listening: false,
     fill: '#555',
+    perfectDrawEnabled: false,
   });
 
   return {

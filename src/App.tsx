@@ -7,11 +7,6 @@ import { ForFun } from './components/Boom';
 import { NextBackground } from './components/NextBackground';
 
 function App() {
-  // return (
-  //   <>
-  //     <Background />
-  //   </>
-  // );
   return (
     <>
       <Background />

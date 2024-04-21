@@ -58,7 +58,6 @@ export function buildDots(width: number, height: number) {
 }
 
 export function updateDots() {
-  const nextDots: Dot[] = [];
   dots.forEach((dot) => {
     const offsetXNoise = noise3D(
       dot.location.x / 500,
@@ -76,10 +75,8 @@ export function updateDots() {
     const offsetY = mappedOffsetY;
     dot.render.offsetX(offsetX);
     dot.render.offsetY(offsetY);
-    nextDots.push(dot);
   });
 
-  dots = nextDots;
   z += mobile ? perlinMovement * 2 : perlinMovement;
 }
 
@@ -107,6 +104,7 @@ function buildDot({
     fill: fill,
     listening: false,
     cornerRadius: 10,
+    perfectDrawEnabled: false,
   });
 
   return {

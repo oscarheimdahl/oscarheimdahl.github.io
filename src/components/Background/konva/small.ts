@@ -19,7 +19,7 @@ let layer: Konva.Layer;
 
 const noise3D = createNoise3D(() => 1);
 let z = 0.1;
-let perlinMovement = 0.001;
+let perlinMovement = 0.0005;
 
 export const smallLayer: StageLayer = {
   build: buildSymbols,
@@ -35,8 +35,8 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
   const extraOffsetX = (stageWidth - width) / 2;
   const extraOffsetY = (stageHeight - height) / 2;
 
-  const dim = 8;
-  const gap = 32;
+  const dim = Math.floor(Math.min(width, height) / 100);
+  const gap = dim * 4 + 1;
   const cols = Math.floor(width / (dim + gap));
   const rows = Math.floor(height / (dim + gap));
   const xOffset = (width - cols * (dim + gap)) / 2;
@@ -58,8 +58,6 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
 }
 
 export function updateSymbols() {
-  const nextSymbols: Dot[] = [];
-
   symbols.forEach((symbol) => {
     const noiseAmp = 10000;
     const noise = noise3D(
@@ -69,25 +67,22 @@ export function updateSymbols() {
     );
 
     symbol.render.fill('#0A0A0A');
-    if (noise > -0.4) symbol.render.fill('#ef4444');
-    if (noise > -0.3) symbol.render.fill('#f97316');
-    if (noise > -0.2) symbol.render.fill('#f59e0b');
-    if (noise > -0.1) symbol.render.fill('#eab308');
-    if (noise > 0.0) symbol.render.fill('#84cc16');
-    if (noise > 0.1) symbol.render.fill('#22c55e');
-    if (noise > 0.2) symbol.render.fill('#10b981');
-    if (noise > 0.3) symbol.render.fill('#14b8a6');
-    if (noise > 0.4) symbol.render.fill('#06b6d4');
-    if (noise > 0.5) symbol.render.fill('#0ea5e9');
-    if (noise > 0.6) symbol.render.fill('#3b82f6');
-    if (noise > 0.7) symbol.render.fill('#6366f1');
-    if (noise > 0.8) symbol.render.fill('#8b5cf6');
-    if (noise > 0.9) symbol.render.fill('#a855f7');
+    if (noise > -0.4) symbol.render.fill('hsl(0, 85%, 59%)');
+    if (noise > -0.3) symbol.render.fill('hsl(25, 95%, 52%)');
+    if (noise > -0.2) symbol.render.fill('hsl(39, 94%, 50%)');
+    if (noise > -0.1) symbol.render.fill('hsl(44, 93%, 47%)');
+    if (noise > 0.0) symbol.render.fill('hsl(83, 80%, 45%)');
+    if (noise > 0.1) symbol.render.fill('hsl(144, 71%, 45%)');
+    if (noise > 0.2) symbol.render.fill('hsl(167, 84%, 39%)');
+    if (noise > 0.3) symbol.render.fill('hsl(177, 81%, 39%)');
+    if (noise > 0.4) symbol.render.fill('hsl(193, 94%, 43%)');
+    if (noise > 0.5) symbol.render.fill('hsl(202, 88%, 48%)');
+    if (noise > 0.6) symbol.render.fill('hsl(220, 89%, 61%)');
+    if (noise > 0.7) symbol.render.fill('hsl(237, 77%, 63%)');
+    if (noise > 0.8) symbol.render.fill('hsl(252, 86%, 65%)');
+    if (noise > 0.9) symbol.render.fill('hsl(257, 85%, 64%)');
     // else symbol.render.fill('#555');
-
-    nextSymbols.push(symbol);
   });
-  symbols = nextSymbols;
   z += perlinMovement;
 }
 
@@ -113,7 +108,7 @@ function buildDot({
     height: w,
     listening: false,
     fill: '#555',
-    opacity: 0.2,
+    perfectDrawEnabled: false,
   });
 
   rect.offsetX(w / 2);

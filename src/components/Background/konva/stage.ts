@@ -5,12 +5,14 @@ import { asciiLayer } from './ascii';
 import { dotLayer } from './dots';
 import { diamondLayer } from './diamond';
 import { smallLayer } from './small';
+// import { flockLayer } from './flock';
 
 export type StageLayer = {
   build: (width: number, height: number) => Konva.Layer;
   update: () => void;
 };
 
+Konva.pixelRatio = 1;
 let stage: Stage;
 let rendering = false;
 
@@ -43,6 +45,7 @@ export function buildBackground() {
 
   stage.removeChildren();
   const builtLayer = layers[layerIndex].build(width, height);
+  builtLayer.listening(false);
   stage.add(builtLayer);
 
   if (!rendering) {
