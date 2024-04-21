@@ -1,7 +1,7 @@
 import Konva from 'konva';
 
 import type { Rect } from 'konva/lib/shapes/Rect';
-import { createNoise3D } from 'simplex-noise';
+import { NoiseFunction3D, createNoise3D } from 'simplex-noise';
 import Victor from 'victor';
 import { StageLayer } from './stage';
 
@@ -17,7 +17,7 @@ type Dot = {
 let symbols: Dot[] = [];
 let layer: Konva.Layer;
 
-const noise3D = createNoise3D(() => 1);
+let noise3D: NoiseFunction3D;
 let z = 0.1;
 let perlinMovement = 0.0005;
 
@@ -27,6 +27,7 @@ export const smallLayer: StageLayer = {
 };
 
 export function buildSymbols(stageWidth: number, stageHeight: number) {
+  noise3D = createNoise3D(Math.random);
   layer = new Konva.Layer();
   symbols = [];
 
@@ -35,7 +36,7 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
   const extraOffsetX = (stageWidth - width) / 2;
   const extraOffsetY = (stageHeight - height) / 2;
 
-  const dim = Math.floor(Math.min(width, height) / 100);
+  const dim = Math.floor(Math.min(width, height) / 300);
   const gap = dim * 4 + 1;
   const cols = Math.floor(width / (dim + gap));
   const rows = Math.floor(height / (dim + gap));
@@ -59,7 +60,7 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
 
 export function updateSymbols() {
   symbols.forEach((symbol) => {
-    const noiseAmp = 10000;
+    const noiseAmp = 3000;
     const noise = noise3D(
       symbol.location.x / noiseAmp,
       symbol.location.y / noiseAmp,

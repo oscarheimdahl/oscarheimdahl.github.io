@@ -22,13 +22,13 @@ export function NextBackground() {
         <div className='flex gap-2'>
           <button
             onClick={() => handleClick('left')}
-            className='hover:opacity-65 transition-opacity p-2 bg-gradient-to-br  from-blue-800  to-blue-950 rounded-md text-light'
+            className='hover:opacity-65 transition-opacity p-2 bg-gradient-to-br  from-slate-800  to-dark rounded-md text-light'
           >
             <ArrowLeft />
           </button>
           <button
             onClick={() => handleClick('right')}
-            className='hover:opacity-65 transition-opacity p-2 bg-gradient-to-br   from-blue-800  to-blue-950 rounded-md text-light'
+            className='hover:opacity-65 transition-opacity p-2 bg-gradient-to-br   from-slate-800  to-dark rounded-md text-light'
           >
             <ArrowRight />
           </button>
