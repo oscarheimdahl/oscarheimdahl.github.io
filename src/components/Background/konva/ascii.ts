@@ -68,6 +68,7 @@ export function updateSymbols() {
 
     if (noise > 0.5) symbol.render.fill('#aaa');
     else symbol.render.fill('#555');
+    if (symbol.bright) symbol.render.fill('rgb(252, 208, 31)');
 
     if (noise > 0) symbol.render.scale({ x: 5, y: 5 });
     else symbol.render.scale({ x: 0, y: 0 });

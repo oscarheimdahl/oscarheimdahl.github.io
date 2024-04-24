@@ -91,6 +91,28 @@ body {
   }
 }
 
+.animate-announce {
+  animation: announce 10s infinite;
+}
+
+@keyframes announce {
+  0% {
+    transform: none;
+  }
+  2% {
+    transform: rotate(5deg);
+  }
+  4% {
+    transform: rotate(-5deg);
+  }
+  6% {
+    transform: rotate(5deg);
+  }
+  8% {
+    transform: none;
+  }
+}
+
 @media (min-width: 640px) {
   .window-grid {
     grid-template-areas:

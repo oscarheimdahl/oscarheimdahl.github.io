@@ -5,7 +5,7 @@ import { asciiLayer } from './ascii';
 import { dotLayer } from './dots';
 import { diamondLayer } from './diamond';
 import { smallLayer } from './small';
-// import { flockLayer } from './flock';
+import { flockLayer } from './flock';
 
 export type StageLayer = {
   build: (width: number, height: number) => Konva.Layer;
@@ -17,7 +17,7 @@ let stage: Stage;
 let rendering = false;
 
 let layerIndex = 0;
-const layers = [dotLayer, asciiLayer, diamondLayer, smallLayer];
+const layers = [flockLayer, dotLayer, diamondLayer, asciiLayer, smallLayer];
 
 export function nextBackground() {
   layerIndex = layerIndex + 1;

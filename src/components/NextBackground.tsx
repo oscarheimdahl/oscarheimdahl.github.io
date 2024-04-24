@@ -3,14 +3,17 @@ import { useAppState } from '@/store';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { nextBackground, prevBackground } from './Background/konva/stage';
 import { motion } from 'framer-motion';
+import { useRef } from 'react';
 
 export function NextBackground() {
   const setHideBackground = useAppState((state) => state.setHideBackground);
   const darkMode = useAppState((state) => state.darkMode);
+  const timoutRef = useRef<NodeJS.Timeout | null>(null);
 
   function handleClick(direction: 'left' | 'right') {
+    if (timoutRef.current) clearTimeout(timoutRef.current);
     setHideBackground(true);
-    setTimeout(() => {
+    timoutRef.current = setTimeout(() => {
       direction === 'right' ? nextBackground() : prevBackground();
       setHideBackground(false);
     }, 200);
