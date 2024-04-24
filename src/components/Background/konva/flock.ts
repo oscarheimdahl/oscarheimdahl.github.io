@@ -71,7 +71,7 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
 }
 
 export function updateSymbols() {
-  symbols.forEach((symbol, i) => {
+  symbols.forEach((symbol) => {
     checkBorder(symbol.location);
 
     symbol.acceleration = new Victor(0, 0);

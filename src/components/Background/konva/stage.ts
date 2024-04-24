@@ -17,7 +17,7 @@ let stage: Stage;
 let rendering = false;
 
 let layerIndex = 0;
-const layers = [flockLayer, dotLayer, diamondLayer, asciiLayer, smallLayer];
+const layers = [dotLayer, diamondLayer, asciiLayer, smallLayer, flockLayer];
 
 export function nextBackground() {
   layerIndex = layerIndex + 1;
