@@ -17,7 +17,7 @@ let stage: Stage;
 let rendering = false;
 
 let layerIndex = 0;
-const layers = [dotLayer, diamondLayer, asciiLayer, smallLayer, flockLayer];
+const layers = [dotLayer, flockLayer, asciiLayer, smallLayer, diamondLayer];
 
 export function nextBackground() {
   layerIndex = layerIndex + 1;
@@ -71,14 +71,14 @@ export function map(
   low1: number,
   high1: number,
   low2: number,
-  high2: number
+  high2: number,
 ) {
   return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 }
 
 export function inViewport(
   shape: Shape,
-  ignore?: { top?: boolean; right?: boolean; bottom?: boolean; left?: boolean }
+  ignore?: { top?: boolean; right?: boolean; bottom?: boolean; left?: boolean },
 ) {
   const outsideTop = shape.y() < 0;
   const outsideBottom = shape.y() > window.innerHeight;

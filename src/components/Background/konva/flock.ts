@@ -23,7 +23,7 @@ let width = 0;
 let height = 0;
 
 const maxAcceleration = 0.1;
-const maxSpeed = 2;
+const maxSpeed = 1.5;
 const symbolWidth = 5;
 
 const cohesionMagnitude = maxSpeed * 0.002;
@@ -33,6 +33,12 @@ const seperationMagnitude = maxSpeed * 0.0015;
 const cohesionRange = 400;
 const alignmentRange = 100;
 const seperationRange = symbolWidth * 2;
+
+const mouseRange = 100;
+const mouseForce = maxSpeed * 0.5;
+
+const centerRange = 500;
+const centerForce = maxSpeed * 0.35;
 
 let mousePosition: Victor | undefined;
 // let fixedPositions: Victor[] = [];
@@ -56,7 +62,7 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
   layer = new Konva.Layer();
 
   for (let i = 0; i < 100; i++) {
-    const builtDot = buildDot({
+    const builtDot = createSymbol({
       x: Math.random() * width,
       y: Math.random() * height,
       w: symbolWidth,
@@ -71,51 +77,74 @@ export function buildSymbols(stageWidth: number, stageHeight: number) {
 }
 
 export function updateSymbols() {
-  symbols.forEach((symbol) => {
-    checkBorder(symbol.location);
-
-    symbol.acceleration = new Victor(0, 0);
-
-    // mousePositions.forEach((position) => {
-    if (mousePosition) {
-      const diff = mousePosition.clone().subtract(symbol.location);
-      if (diff.magnitude() < 50) {
-        symbol.render.scaleX(1.5);
-        symbol.render.scaleY(3);
-        diff.normalize();
-        diff.rotateDeg(180);
-        symbol.velocity = diff;
-        symbol.acceleration.rotateByDeg(Math.random() > 0.5 ? 2 : -2);
-      } else {
-        symbol.render.scaleX(1);
-        symbol.render.scaleY(1.5);
-      }
-    }
-    // });
-
-    applyForces(symbol);
-
-    symbol.velocity.add(symbol.acceleration);
-    symbol.render.fill('#0A0A0A');
-    const speedPercent = symbol.velocity.magnitude() / maxSpeed;
-    const roundedPercent = Math.floor(speedPercent * 100);
-    symbol.render.fill(`hsl(255,100%,${roundedPercent}%)`);
-
-    if (symbol.acceleration.magnitude() > maxAcceleration)
-      symbol.velocity.multiplyScalar(0.8);
-
-    if (symbol.velocity.magnitude() > maxSpeed)
-      symbol.velocity.multiplyScalar(0.8);
-
-    symbol.location.add(symbol.velocity);
-    symbol.render.rotation(symbol.velocity.angleDeg() + 95);
-
-    symbol.render.x(symbol.location.x);
-    symbol.render.y(symbol.location.y);
-  });
+  symbols.forEach(updateSymbol);
 }
 
-function applyForces(thisSymbol: Dot) {
+function updateSymbol(symbol: Dot) {
+  wrapAtEdges(symbol.location);
+
+  symbol.acceleration = new Victor(0, 0);
+
+  applyMouseRepulsion(symbol);
+  applyCenterRepulsion(symbol);
+  applyFlockingForces(symbol);
+
+  symbol.velocity.add(symbol.acceleration);
+  symbol.render.fill('#0A0A0A');
+  const speedPercent = symbol.velocity.magnitude() / maxSpeed;
+  const roundedPercent = Math.floor(speedPercent * 100);
+  symbol.render.fill(`hsl(255,100%,${roundedPercent}%)`);
+
+  if (symbol.acceleration.magnitude() > maxAcceleration)
+    symbol.velocity.multiplyScalar(0.8);
+
+  if (symbol.velocity.magnitude() > maxSpeed)
+    symbol.velocity.multiplyScalar(0.8);
+
+  symbol.location.add(symbol.velocity);
+  symbol.render.rotation(symbol.velocity.angleDeg() + 95);
+
+  symbol.render.x(symbol.location.x);
+  symbol.render.y(symbol.location.y);
+}
+
+function applyMouseRepulsion(symbol: Dot) {
+  // mousePositions.forEach((position) => {
+  if (mousePosition) {
+    const diff = symbol.location.clone().subtract(mousePosition);
+    const distance = diff.magnitude();
+
+    if (distance < mouseRange) {
+      // Stronger repulsion when close, tapered with distance.
+      diff.normalize();
+      const strength = mouseForce / Math.max(distance, 1);
+      symbol.acceleration.add(diff.multiplyScalar(strength));
+
+      const scaleBoost = 1 + (mouseRange - distance) / mouseRange;
+      symbol.render.scaleX(1 + 0.2 * scaleBoost);
+      symbol.render.scaleY(1.5 + 0.8 * scaleBoost);
+    } else {
+      symbol.render.scaleX(1);
+      symbol.render.scaleY(1.5);
+    }
+  }
+  // });
+}
+
+function applyCenterRepulsion(symbol: Dot) {
+  const center = new Victor(width / 2, height / 2);
+  const diff = symbol.location.clone().subtract(center);
+  const distance = diff.magnitude();
+
+  if (distance < centerRange) {
+    // Push away from the canvas center with distance falloff.
+    diff.normalize();
+    const strength = centerForce / Math.max(distance, 1);
+    symbol.acceleration.add(diff.multiplyScalar(strength));
+  }
+}
+
+function applyFlockingForces(symbol: Dot) {
   let coherenceClose = 0;
   let coherenceAveragePosition = new Victor(0, 0);
   const alignmentC = new Victor(0, 0);
@@ -124,8 +153,8 @@ function applyForces(thisSymbol: Dot) {
   let seperationCount = 0;
 
   symbols.forEach((otherSymbol) => {
-    if (thisSymbol === otherSymbol) return;
-    const distance = thisSymbol.location.distance(otherSymbol.location);
+    if (symbol === otherSymbol) return;
+    const distance = symbol.location.distance(otherSymbol.location);
 
     if (distance < cohesionRange) {
       coherenceClose++;
@@ -133,38 +162,44 @@ function applyForces(thisSymbol: Dot) {
     }
     if (distance < alignmentRange) {
       alignmentCount++;
-      const diff = thisSymbol.velocity.clone().subtract(otherSymbol.velocity);
-      alignmentC.subtract(diff);
+      alignmentC.add(otherSymbol.velocity);
     }
     if (distance < seperationRange) {
-      const diff = thisSymbol.velocity.clone().subtract(otherSymbol.velocity);
-      diff.normalize();
-      seperationC.add(diff);
-      seperationCount++;
+      const diff = symbol.location.clone().subtract(otherSymbol.location);
+      if (diff.magnitude() > 0) {
+        // Stronger repulsion when very close.
+        diff.normalize();
+        diff.multiplyScalar(1 / Math.max(distance, 0.001));
+        seperationC.add(diff);
+        seperationCount++;
+      }
     }
   });
 
   if (coherenceClose > 0) {
     coherenceAveragePosition.divideScalar(coherenceClose);
-    if (coherenceAveragePosition.magnitude() > 0) {
-      coherenceAveragePosition.normalize();
-      coherenceAveragePosition.multiplyScalar(cohesionMagnitude);
-      thisSymbol.acceleration.add(coherenceAveragePosition);
-    }
+    const cohesionSteer = coherenceAveragePosition
+      .clone()
+      .subtract(symbol.location);
+    if (cohesionSteer.magnitude() > 0) cohesionSteer.normalize();
+    cohesionSteer.multiplyScalar(cohesionMagnitude);
+    symbol.acceleration.add(cohesionSteer);
   }
   if (alignmentCount > 0) {
-    alignmentC.normalize();
+    alignmentC.divideScalar(alignmentCount);
+    if (alignmentC.magnitude() > 0) alignmentC.normalize();
     alignmentC.multiplyScalar(alignmentMagnitude);
-    thisSymbol.acceleration.add(alignmentC);
+    symbol.acceleration.add(alignmentC);
   }
   if (seperationCount > 0) {
-    seperationC.normalize();
+    seperationC.divideScalar(seperationCount);
+    if (seperationC.magnitude() > 0) seperationC.normalize();
     seperationC.multiplyScalar(seperationMagnitude);
-    thisSymbol.acceleration.add(seperationC);
+    symbol.acceleration.add(seperationC);
   }
 }
 
-function checkBorder(location: Victor) {
+function wrapAtEdges(location: Victor) {
   if (location.x < -symbolWidth) location.x = width;
   if (location.x > width + symbolWidth) location.x = -symbolWidth;
   if (location.y < -symbolWidth) location.y = height;
@@ -179,7 +214,7 @@ interface BuildDotArgs {
   location?: Victor;
 }
 
-function buildDot({
+function createSymbol({
   x,
   y,
   w,

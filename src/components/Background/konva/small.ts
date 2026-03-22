@@ -64,24 +64,24 @@ export function updateSymbols() {
     const noise = noise3D(
       symbol.location.x / noiseAmp,
       symbol.location.y / noiseAmp,
-      z
+      z,
     );
 
     symbol.render.fill('#0A0A0A');
-    if (noise > -0.4) symbol.render.fill('hsl(0, 85%, 59%)');
-    if (noise > -0.3) symbol.render.fill('hsl(25, 95%, 52%)');
-    if (noise > -0.2) symbol.render.fill('hsl(39, 94%, 50%)');
-    if (noise > -0.1) symbol.render.fill('hsl(44, 93%, 47%)');
-    if (noise > 0.0) symbol.render.fill('hsl(83, 80%, 45%)');
-    if (noise > 0.1) symbol.render.fill('hsl(144, 71%, 45%)');
-    if (noise > 0.2) symbol.render.fill('hsl(167, 84%, 39%)');
-    if (noise > 0.3) symbol.render.fill('hsl(177, 81%, 39%)');
-    if (noise > 0.4) symbol.render.fill('hsl(193, 94%, 43%)');
-    if (noise > 0.5) symbol.render.fill('hsl(202, 88%, 48%)');
-    if (noise > 0.6) symbol.render.fill('hsl(220, 89%, 61%)');
-    if (noise > 0.7) symbol.render.fill('hsl(237, 77%, 63%)');
-    if (noise > 0.8) symbol.render.fill('hsl(252, 86%, 65%)');
-    if (noise > 0.9) symbol.render.fill('hsl(257, 85%, 64%)');
+    if (noise > -0.4) symbol.render.fill('hsl(0, 85%, 49%)');
+    if (noise > -0.3) symbol.render.fill('hsl(25, 95%, 42%)');
+    if (noise > -0.2) symbol.render.fill('hsl(39, 94%, 40%)');
+    if (noise > -0.1) symbol.render.fill('hsl(44, 93%, 37%)');
+    if (noise > 0.0) symbol.render.fill('hsl(83, 80%, 35%)');
+    if (noise > 0.1) symbol.render.fill('hsl(144, 71%, 35%)');
+    if (noise > 0.2) symbol.render.fill('hsl(167, 84%, 29%)');
+    if (noise > 0.3) symbol.render.fill('hsl(177, 81%, 29%)');
+    if (noise > 0.4) symbol.render.fill('hsl(193, 94%, 33%)');
+    if (noise > 0.5) symbol.render.fill('hsl(202, 88%, 38%)');
+    if (noise > 0.6) symbol.render.fill('hsl(220, 89%, 51%)');
+    if (noise > 0.7) symbol.render.fill('hsl(237, 77%, 53%)');
+    if (noise > 0.8) symbol.render.fill('hsl(252, 86%, 55%)');
+    if (noise > 0.9) symbol.render.fill('hsl(257, 85%, 54%)');
     // else symbol.render.fill('#555');
   });
   z += perlinMovement;

@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react';
 import { Window } from './Window';
+import { motion } from 'framer-motion';
 
 export function ProjectsTitle() {
   return (
@@ -85,12 +86,18 @@ function LinkButton({
   if (color === 2) backgroundStyle = 'from-emerald-800 to-blue-900';
   if (color === 3) backgroundStyle = 'from-emerald-800 to-blue-900';
   return (
-    <a
-      target='_blank'
-      href={href}
-      className={`group flex shadow-md px-4 py-2 rounded-md w-fit justify-between bg-gradient-to-br text-white ${backgroundStyle}`}
-    >
-      {children} <ArrowUpRight className='' />
-    </a>
+    <motion.a whileHover='hover' target='_blank' href={href}>
+      <motion.div
+        variants={{
+          hover: {
+            translateX: 2,
+            translateY: -2,
+          },
+        }}
+        className={`group flex shadow-md px-4 py-2 rounded-md w-fit justify-between bg-gradient-to-br text-white ${backgroundStyle}`}
+      >
+        {children} <ArrowUpRight className='' />
+      </motion.div>
+    </motion.a>
   );
 }
