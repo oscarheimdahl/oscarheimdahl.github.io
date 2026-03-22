@@ -1,7 +1,12 @@
 import { Background } from './components/Background/Background';
 import { Profile } from '@/components/Profile/Profile';
 import { Toggle } from '@/components/Toggle';
-import { Project1, Project2, ProjectsTitle } from '@/components/Projects';
+import {
+  Project1,
+  Project2,
+  Project3,
+  ProjectsTitle,
+} from '@/components/Projects';
 import { Contact } from './components/Contact';
 import { ForFun } from './components/Boom';
 import { NextBackground } from './components/NextBackground';
@@ -25,14 +30,14 @@ function App() {
         >
           <ProjectsTitle />
           <div className='grid'>
-            <div
-              className='translate-x-8 translate-y-8'
-              style={{ gridArea: '1 / 1' }}
-            >
+            <div style={{ gridArea: '1 / 1' }}>
               <Project1 />
             </div>
             <div style={{ gridArea: '1 / 1' }}>
               <Project2 />
+            </div>
+            <div style={{ gridArea: '1 / 1' }}>
+              <Project3 />
             </div>
           </div>
         </div>

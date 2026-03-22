@@ -4,9 +4,11 @@ import { ReactNode, useEffect, useState } from 'react';
 
 interface WindowProps {
   children: React.ReactNode;
+  translateX?: number;
+  translateY?: number;
 }
 
-export function Window({ children }: WindowProps) {
+export function Window({ children, translateX, translateY }: WindowProps) {
   const backgroundRef = useAppState((state) => state.backgroundRef);
   const newWindowZ = useAppState((state) => state.newWindowZ);
   const windowZ = useAppState((state) => state.windowZ);
@@ -16,38 +18,43 @@ export function Window({ children }: WindowProps) {
 
   return (
     <motion.div
-      initial={{ scale: 0.4 }}
-      animate={{ scale: 1 }}
-      transition={{
-        delay: 1,
+      style={{
+        zIndex: z,
+        translate: `${translateX || '0'}px ${translateY || '0'}px`,
       }}
+      onMouseDown={() => {
+        newWindowZ();
+        setZ(windowZ + 1);
+      }}
+      drag
+      whileDrag={{ rotate: '3deg', zIndex: 1000 }}
+      whileTap={{ scale: 0.98 }}
+      animate={{
+        scale: 1,
+        translateX,
+        translateY,
+      }}
+      dragMomentum={false}
+      dragConstraints={backgroundRef}
+      id='main-modal'
     >
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={{ scale: 0.4 }}
+        animate={{ scale: 1 }}
         transition={{
-          delay: 0.5,
+          delay: 1,
         }}
       >
         <motion.div
-          style={{ zIndex: z }}
-          onMouseDown={() => {
-            newWindowZ();
-            setZ(windowZ + 1);
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            delay: 0.5,
           }}
-          drag
-          whileDrag={{ rotate: '3deg', zIndex: 1000 }}
-          whileTap={{ scale: 0.98 }}
-          animate={{
-            scale: 1,
-          }}
-          dragMomentum={false}
-          dragConstraints={backgroundRef}
-          id='main-modal'
         >
           <Boom>
             <div
-              className={`pt-12 p-4 size-fit rounded-lg shadow-lg shadow-[#000000aa] relative cursor-move transition-colors rotate-0
+              className={`pt-12 p-4 size-fit rounded-lg shadow-lg shadow-[#00000046] relative cursor-move transition-colors rotate-0
         bg-light dark:bg-neutral-950`}
             >
               <DragIndicator />
