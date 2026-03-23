@@ -39,7 +39,7 @@ export function Project1() {
 }
 export function Project2() {
   return (
-    <Window translateX={8} translateY={8}>
+    <Window translateX={16} translateY={40}>
       <div className='flex flex-col gap-4'>
         {/* <LinkButton href='https://chat.deno.dev'>Chat</LinkButton> */}
         <LinkButton color={2} href='https://gradient.deno.dev'>
@@ -56,7 +56,7 @@ export function Project2() {
 
 export function Project3() {
   return (
-    <Window translateX={16} translateY={16}>
+    <Window translateX={40} translateY={16}>
       <div className='flex flex-col gap-4'>
         <LinkButton
           color={3}
